@@ -14,13 +14,13 @@
     </div>
     <div class="session-seats">
       <span class="gauge" aria-hidden="true"><% for (let i = 0; i < s.seats && i < 12; i++) { %><i class="<%= i < s.taken ? 'on' : '' %>"></i><% } %></span>
-      <% if (s.isCancelled) { %>odwołane<% } else if (s.isFull) { %>brak miejsc<% } else { %><%= s.seatsLeft %> <%= f.plural(s.seatsLeft, 'wolne miejsce', 'wolne miejsca', 'wolnych miejsc') %><% } %>
+      <% if (s.isCancelled) { %>odwołane<% } else if (s.isClosed) { %>zapisy zamknięte<% } else if (s.isFull) { %>brak miejsc<% } else { %><%= s.seatsLeft %> <%= f.plural(s.seatsLeft, 'wolne miejsce', 'wolne miejsca', 'wolnych miejsc') %><% } %>
     </div>
     <div class="session-price"><%= s.price ? f.money(s.price) : '' %></div>
     <div class="session-action">
       <% if (s.canSignUp) { %>
         <a class="btn btn-line btn-sm" href="/warsztaty/<%= s.workshop_slug %>/zapis?termin=<%= s.id %>">Zapisz się</a>
-      <% } else if (s.isFull) { %>
+      <% } else if (s.isFull && !s.isCancelled && !s.isClosed) { %>
         <a class="btn-text" href="/warsztaty/<%= s.workshop_slug %>/zapis?termin=<%= s.id %>">Lista rezerwowa</a>
       <% } %>
     </div>

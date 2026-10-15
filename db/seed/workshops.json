@@ -1,5 +1,5 @@
 {
-  "_note": "PRZYKŁADOWE DANE do podmiany na prawdziwą ofertę pracowni. Ceny w groszach brutto od osoby, terminy w czasie warszawskim (YYYY-MM-DD HH:MM). Po edycji: npm run seed.",
+  "_note": "PRZYKŁADOWE DANE startowe. Wczytywane WYŁĄCZNIE do pustej bazy (pierwsze uruchomienie) - potem warsztaty i terminy zarządza się w panelu /admin/wydarzenia, a zmiany w tym pliku nie mają wpływu na istniejącą bazę. Ceny w groszach brutto od osoby, terminy w czasie warszawskim (YYYY-MM-DD HH:MM).",
   "workshops": [
     {
       "slug": "notes-w-twardej-oprawie",
@@ -22,8 +22,17 @@
       "image": "warsztaty-klejenie",
       "sort": 10,
       "sessions": [
-        { "start": "2026-11-07 10:00", "end": "2026-11-07 14:00", "location": "Pracownia Bookowska, Sopot" },
-        { "start": "2026-12-05 10:00", "end": "2026-12-05 14:00", "location": "Pracownia Bookowska, Sopot", "note": "edycja przedświąteczna" }
+        {
+          "start": "2026-11-07 10:00",
+          "end": "2026-11-07 14:00",
+          "location": "Pracownia Bookowska, Sopot"
+        },
+        {
+          "start": "2026-12-05 10:00",
+          "end": "2026-12-05 14:00",
+          "location": "Pracownia Bookowska, Sopot",
+          "note": "edycja przedświąteczna"
+        }
       ]
     },
     {
@@ -47,7 +56,11 @@
       "image": "warsztaty-szycie",
       "sort": 20,
       "sessions": [
-        { "start": "2026-11-21 11:00", "end": "2026-11-21 14:00", "location": "Pracownia Bookowska, Sopot" }
+        {
+          "start": "2026-11-21 11:00",
+          "end": "2026-11-21 14:00",
+          "location": "Pracownia Bookowska, Sopot"
+        }
       ]
     },
     {
@@ -71,7 +84,11 @@
       "image": "warsztaty-pomiar",
       "sort": 30,
       "sessions": [
-        { "start": "2026-12-12 10:00", "end": "2026-12-12 16:00", "location": "Pracownia Bookowska, Sopot" }
+        {
+          "start": "2026-12-12 10:00",
+          "end": "2026-12-12 16:00",
+          "location": "Pracownia Bookowska, Sopot"
+        }
       ]
     },
     {

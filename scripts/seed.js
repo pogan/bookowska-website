@@ -1,23 +1,22 @@
-// Wczytuje ofertę z db/seed/products.json i db/seed/workshops.json do bazy.
+// Synchronizuje produkty z db/seed/products.json do bazy.
 // Użycie: npm run seed  [-- --reset-stock]
 //   --reset-stock  nadpisuje stany magazynowe wartościami z pliku (domyślnie
 //                  stan ustawiany jest tylko przy pierwszym imporcie produktu).
+// Warsztaty i terminy NIE są synchronizowane - zarządza się nimi w panelu
+// (/admin/wydarzenia); db/seed/workshops.json trafia tylko do pustej bazy.
 require('../lib/config');
-const { syncAll } = require('../lib/seed');
+const { syncProducts, importWorkshops } = require('../lib/seed');
 
 const resetStock = process.argv.includes('--reset-stock');
-const stats = syncAll({ resetStock });
+const stats = syncProducts({ resetStock });
 
 console.log(
-  `Produkty: ${stats.products.inserted} nowych, ${stats.products.updated} zaktualizowanych, ` +
-    `${stats.products.hidden} ukrytych${resetStock ? ' (stany magazynowe nadpisane)' : ''}.`,
+  `Produkty: ${stats.inserted} nowych, ${stats.updated} zaktualizowanych, ` +
+    `${stats.hidden} ukrytych${resetStock ? ' (stany magazynowe nadpisane)' : ''}.`,
 );
+const imported = importWorkshops();
 console.log(
-  `Warsztaty: ${stats.workshops.workshops}, terminy: ${stats.workshops.sessions}, ` +
-    `usunięte terminy: ${stats.workshops.removedSessions}, ukryte warsztaty: ${stats.workshops.hidden}.`,
+  imported
+    ? `Warsztaty: pusta baza - wczytano ${imported.workshops} rodzajów i ${imported.sessions} terminów z pliku.`
+    : 'Warsztaty: pominięte - zarządzaj nimi w panelu /admin/wydarzenia.',
 );
-if (stats.workshops.keptWithSignups) {
-  console.log(
-    `Uwaga: ${stats.workshops.keptWithSignups} termin(y) nie ma już w pliku, ale mają zgłoszenia - zostały w bazie.`,
-  );
-}

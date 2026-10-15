@@ -1,0 +1,181 @@
+<%
+  const err = (field) => errors[field];
+  const invalid = (field) => (errors[field] ? ' is-invalid' : '');
+  const val = (field) => (values[field] ?? '');
+  const describedBy = (field) => (errors[field] ? ` aria-describedby="${field}-err"` : '');
+  const isEdit = Boolean(session);
+  const action = isEdit ? `/admin/wydarzenia/terminy/${session.id}` : '/admin/wydarzenia/terminy';
+  const current = workshops.find((w) => String(w.id) === String(values.workshop_id));
+  const activeSignups = isEdit ? session.signups.filter((g) => g.status !== 'cancelled') : [];
+  const signupStatus = { new: 'nowe', confirmed: 'potwierdzone', cancelled: 'wycofane' };
+  const STATUSES = [
+    { id: 'open', label: 'Zapisy otwarte', detail: 'termin w kalendarzu z przyciskiem „Zapisz się”' },
+    { id: 'closed', label: 'Zapisy zamknięte', detail: 'termin widoczny, ale bez nowych zgłoszeń' },
+    { id: 'cancelled', label: 'Odwołany', detail: 'w kalendarzu z dopiskiem „odwołane”' },
+  ];
+  const bcc = activeSignups.map((g) => g.email).filter((e, i, a) => a.indexOf(e) === i).join(',');
+%>
+<section class="page-head pb-0">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/admin">Panel</a><span aria-hidden="true">/</span><a href="/admin/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? `Termin ${f.dateNum(session.starts_at)}` : 'Nowy termin' %></nav>
+    <span class="label"><%= isEdit ? session.workshop_title : 'Wydarzenia' %></span>
+    <h1 class="display"><%= isEdit ? `${f.dateNum(session.starts_at)}, ${f.time(session.starts_at)}` : 'Nowy termin' %></h1>
+    <%- include('_nav') %>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-7">
+        <% if (formError) { %><div class="notice notice-error" role="alert"><p><%= formError %></p></div><% } %>
+        <% if (Object.keys(errors).length) { %><div class="notice notice-error" role="alert"><p>Popraw zaznaczone pola.</p></div><% } %>
+        <% if (activeSignups.length) { %>
+        <div class="notice" role="note">
+          <span class="notice-title">Zapisani: <%= session.taken %> <%= f.plural(session.taken, 'osoba', 'osoby', 'osób') %></span>
+          <p><%= f.typo('Po zmianie daty, godziny, miejsca albo odwołaniu terminu daj znać zapisanym osobom.') %>
+            <a href="mailto:?bcc=<%= encodeURIComponent(bcc) %>&amp;subject=<%= encodeURIComponent(`${session.workshop_title}, ${f.dateNum(session.starts_at)}`) %>">Napisz do zapisanych</a></p>
+        </div>
+        <% } %>
+
+        <form method="post" action="<%= action %>" novalidate>
+          <fieldset class="form-section">
+            <legend class="form-legend">01 · Warsztaty</legend>
+            <label class="form-label" for="workshop_id">Rodzaj warsztatów</label>
+            <select class="form-select<%= invalid('workshop_id') %>" id="workshop_id" name="workshop_id"<%- describedBy('workshop_id') %>>
+              <% workshops.forEach((w) => { %>
+              <option value="<%= w.id %>"<%- String(w.id) === String(values.workshop_id) ? ' selected' : '' %>><%= w.title %><%= w.is_active ? '' : ' (ukryte)' %></option>
+              <% }) %>
+            </select>
+            <% if (err('workshop_id')) { %><div class="invalid-feedback" id="workshop_id-err"><%= err('workshop_id') %></div><% } %>
+            <div class="form-text"><a href="/admin/wydarzenia/rodzaje/nowy">Brakuje rodzaju? Dodaj nowy.</a></div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">02 · Data i godziny</legend>
+            <div class="row g-3">
+              <div class="col-sm-5">
+                <label class="form-label" for="date">Data</label>
+                <input class="form-control<%= invalid('date') %>" id="date" name="date" type="date" required value="<%= val('date') %>"<%- describedBy('date') %>>
+                <% if (err('date')) { %><div class="invalid-feedback" id="date-err"><%= err('date') %></div><% } %>
+              </div>
+              <div class="col-6 col-sm-3">
+                <label class="form-label" for="start">Od</label>
+                <input class="form-control<%= invalid('start') %>" id="start" name="start" type="time" step="300" required value="<%= val('start') %>"<%- describedBy('start') %>>
+                <% if (err('start')) { %><div class="invalid-feedback" id="start-err"><%= err('start') %></div><% } %>
+              </div>
+              <div class="col-6 col-sm-3">
+                <label class="form-label" for="end">Do</label>
+                <input class="form-control<%= invalid('end') %>" id="end" name="end" type="time" step="300" required value="<%= val('end') %>"<%- describedBy('end') %>>
+                <% if (err('end')) { %><div class="invalid-feedback" id="end-err"><%= err('end') %></div><% } %>
+              </div>
+            </div>
+            <div class="form-text">Czas warszawski.</div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">03 · Miejsce i zapisy</legend>
+            <div class="mb-3">
+              <label class="form-label" for="location">Miejsce</label>
+              <input class="form-control<%= invalid('location') %>" id="location" name="location" maxlength="200" required value="<%= val('location') %>"<%- describedBy('location') %>>
+              <% if (err('location')) { %><div class="invalid-feedback" id="location-err"><%= err('location') %></div><% } %>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-sm-6">
+                <label class="form-label" for="capacity">Limit miejsc</label>
+                <input class="form-control<%= invalid('capacity') %>" id="capacity" name="capacity" type="number" min="1" max="500" value="<%= val('capacity') %>" placeholder="<%= current ? `jak w warsztatach: ${current.capacity}` : '' %>"<%- describedBy('capacity') %>>
+                <% if (err('capacity')) { %><div class="invalid-feedback" id="capacity-err"><%= err('capacity') %></div><% } %>
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="price">Cena od osoby (zł)</label>
+                <input class="form-control<%= invalid('price') %>" id="price" name="price" inputmode="decimal" maxlength="12" value="<%= val('price') %>" placeholder="<%= current && current.price ? `jak w warsztatach: ${f.moneyInput(current.price)}` : 'np. 220' %>"<%- describedBy('price') %>>
+                <% if (err('price')) { %><div class="invalid-feedback" id="price-err"><%= err('price') %></div><% } %>
+              </div>
+            </div>
+            <div class="form-text mb-3">Puste pola = wartości z rodzaju warsztatów.</div>
+            <label class="form-label" for="note">Dopisek na stronie <span class="text-muted-ink">(opcjonalnie)</span></label>
+            <input class="form-control" id="note" name="note" maxlength="200" value="<%= val('note') %>" placeholder="np. edycja przedświąteczna">
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">04 · Status</legend>
+            <% STATUSES.forEach((st) => { %>
+            <label class="choice">
+              <input class="form-check-input" type="radio" name="status" value="<%= st.id %>"<%- values.status === st.id ? ' checked' : '' %>>
+              <span class="choice-body"><span class="choice-title"><span><%= st.label %></span></span><span class="choice-detail"><%= st.detail %></span></span>
+            </label>
+            <% }) %>
+          </fieldset>
+
+          <div class="actions">
+            <button class="btn btn-ink" type="submit"><%= isEdit ? 'Zapisz zmiany' : 'Dodaj termin' %></button>
+            <a class="btn btn-line" href="/admin/wydarzenia">Anuluj</a>
+          </div>
+        </form>
+
+        <% if (isEdit) { %>
+        <details class="danger">
+          <summary>Usuń termin</summary>
+          <% if (session.signups.length) { %>
+            <p class="mt-3 mb-0"><%= f.typo('Na ten termin są zgłoszenia, więc nie można go usunąć. Zmień status na „Odwołany” — zgłoszenia zostaną w panelu.') %></p>
+          <% } else { %>
+            <p class="mt-3"><%= f.typo('Termin zniknie z kalendarza na stronie. Tego nie da się cofnąć.') %></p>
+            <form method="post" action="/admin/wydarzenia/terminy/<%= session.id %>/usun" class="m-0">
+              <button class="btn btn-danger-line" type="submit">Usuń termin na stałe</button>
+            </form>
+          <% } %>
+        </details>
+        <% } %>
+      </div>
+
+      <div class="col-lg-4 offset-lg-1">
+        <div class="summary-box box">
+          <span class="label">Na stronie</span>
+          <% if (isEdit) { %>
+          <table class="spec-table mb-3">
+            <tbody>
+              <tr><th scope="row">Status</th><td><%= session.statusLabel %></td></tr>
+              <tr><th scope="row">Miejsca</th><td><%= session.taken %> / <%= session.seats %> zajęte</td></tr>
+              <tr><th scope="row">Cena</th><td><%= session.price ? f.money(session.price) : '—' %></td></tr>
+            </tbody>
+          </table>
+          <% if (session.workshop_active) { %>
+          <a class="link-arrow" href="/warsztaty/<%= session.workshop_slug %>">Zobacz na stronie<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-up-right"></use></svg></a>
+          <% } else { %>
+          <p class="small mb-0"><%= f.typo('Te warsztaty są ukryte — termin nie jest widoczny na stronie.') %></p>
+          <% } %>
+          <% } else { %>
+          <p class="small mb-0"><%= f.typo('Nowy termin od razu pojawi się w kalendarzu na stronie /warsztaty, na stronie warsztatów i na stronie głównej (najbliższe terminy).') %></p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <% if (isEdit) { %>
+    <div class="mt-5">
+      <%- include('../partials/sheet-head', { no: '05', title: 'Zgłoszenia na ten termin', aside: String(session.signups.length) }) %>
+      <% if (session.signups.length) { %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead><tr><th>Wpłynęło</th><th>Osoba</th><th>Kontakt</th><th>Os.</th><th>Wiadomość</th><th>Status</th></tr></thead>
+          <tbody>
+            <% session.signups.forEach((g) => { %>
+            <tr>
+              <td class="mono small"><%= f.dateTime(g.created_at) %></td>
+              <td><%= g.name %></td>
+              <td><a href="mailto:<%= g.email %>"><%= g.email %></a><% if (g.phone) { %><br><span class="small"><%= g.phone %></span><% } %></td>
+              <td class="mono"><%= g.participants %></td>
+              <td class="cell-message small"><%= g.message || '—' %></td>
+              <td class="small"><%= signupStatus[g.status] || g.status %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% } else { %>
+        <p class="text-muted-ink">Jeszcze nikt się nie zapisał.</p>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+</section>

@@ -56,7 +56,7 @@
 </section>
 <% } %>
 
-<% if (!workshop.isRequest) { %>
+<% if (!workshop.isRequest || workshop.sessions.length) { %>
 <section class="sheet" id="terminy">
   <div class="container">
     <%- include('../partials/sheet-head', { no: workshop.program.length ? '02' : '01', title: 'Terminy' }) %>

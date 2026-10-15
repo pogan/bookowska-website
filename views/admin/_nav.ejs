@@ -1,0 +1,5 @@
+<% const current = typeof adminSection !== 'undefined' ? adminSection : ''; %>
+<nav class="admin-nav" aria-label="Sekcje panelu">
+  <a href="/admin"<%- current === 'przeglad' ? ' aria-current="page"' : '' %>>Przegląd</a>
+  <a href="/admin/wydarzenia"<%- current === 'wydarzenia' ? ' aria-current="page"' : '' %>>Wydarzenia</a>
+</nav>

@@ -2,11 +2,11 @@ require('./helpers');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const db = require('../db');
-const { syncAll } = require('../lib/seed');
+const { seedIfEmpty, importWorkshops, syncProducts } = require('../lib/seed');
 const workshops = require('../lib/workshops');
 const { warsawToUtc } = require('../lib/format');
 
-syncAll();
+seedIfEmpty();
 
 // Własny, przyszły termin z małą grupą - niezależny od dat w seedzie.
 const workshop = workshops.getWorkshop('oprawa-japonska');
@@ -67,12 +67,13 @@ test('lista warsztatów pokazuje tylko przyszłe terminy, w kolejności', () => 
   assert.deepEqual(times, [...times].sort());
 });
 
-test('seed jest idempotentny i nie kasuje terminów ze zgłoszeniami', () => {
-  const before = db.prepare('SELECT COUNT(*) AS n FROM workshop_sessions').get().n;
-  const stats = syncAll();
-  // Dodany w teście termin (ze zgłoszeniami) nie istnieje w pliku - musi zostać.
-  assert.ok(stats.workshops.keptWithSignups >= 1);
-  assert.ok(db.prepare('SELECT 1 FROM workshop_sessions WHERE id = ?').get(sessionId));
-  assert.ok(db.prepare('SELECT COUNT(*) AS n FROM workshop_sessions').get().n <= before);
+test('warsztaty z pliku tylko do pustej bazy - zmiany z panelu przetrwają seed', () => {
+  db.prepare("UPDATE workshops SET title = 'Zmienione w panelu' WHERE id = ?").run(workshop.id);
+  const sessionsBefore = db.prepare('SELECT COUNT(*) AS n FROM workshop_sessions').get().n;
+  assert.equal(importWorkshops(), null);
+  syncProducts();
+  assert.equal(db.prepare('SELECT title FROM workshops WHERE id = ?').get(workshop.id).title, 'Zmienione w panelu');
+  assert.equal(db.prepare('SELECT COUNT(*) AS n FROM workshop_sessions').get().n, sessionsBefore);
+  assert.equal(seedIfEmpty(), null);
   assert.equal(warsawToUtc('2026-11-07 10:00'), '2026-11-07T09:00:00.000Z');
 });

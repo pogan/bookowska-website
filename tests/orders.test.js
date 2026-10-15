@@ -2,10 +2,10 @@ require('./helpers');
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const db = require('../db');
-const { syncAll } = require('../lib/seed');
+const { seedIfEmpty } = require('../lib/seed');
 const orders = require('../lib/orders');
 
-syncAll();
+seedIfEmpty();
 
 const product = (slug) => db.prepare('SELECT * FROM products WHERE slug = ?').get(slug);
 const UNIQUE = 'notes-marmurkowy-granat-i-czerwien';

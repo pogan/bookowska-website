@@ -40,9 +40,11 @@
         <% if (typeof unavailableSession !== 'undefined' && unavailableSession) { %>
         <div class="notice notice-warning" role="status">
           <span class="notice-title">Termin <%= f.dateNum(unavailableSession.starts_at) %></span>
-          <p><%= unavailableSession.isFull
-            ? 'Ten termin jest już pełny. Zostaw wiadomość — dopiszę Cię do listy rezerwowej albo zaproponuję kolejny.'
-            : 'Na ten termin nie można się już zapisać. Zostaw wiadomość — dam znać o kolejnym.' %></p>
+          <p><%= unavailableSession.isCancelled
+            ? 'Ten termin został odwołany. Zostaw wiadomość — dam znać o kolejnym.'
+            : unavailableSession.isFull && !unavailableSession.isClosed
+              ? 'Ten termin jest już pełny. Zostaw wiadomość — dopiszę Cię do listy rezerwowej albo zaproponuję kolejny.'
+              : 'Na ten termin nie można się już zapisać. Zostaw wiadomość — dam znać o kolejnym.' %></p>
         </div>
         <% } %>
         <% if (formError) { %>

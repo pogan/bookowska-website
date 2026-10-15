@@ -1,0 +1,175 @@
+<%
+  const err = (field) => errors[field];
+  const invalid = (field) => (errors[field] ? ' is-invalid' : '');
+  const val = (field) => (values[field] ?? '');
+  const describedBy = (field) => (errors[field] ? ` aria-describedby="${field}-err"` : '');
+  const isEdit = Boolean(workshop);
+  const action = isEdit ? `/admin/wydarzenia/rodzaje/${workshop.id}` : '/admin/wydarzenia/rodzaje';
+  const text = (id, label, opts = {}) => ({ id, label, ...opts });
+%>
+<section class="page-head pb-0">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/admin">Panel</a><span aria-hidden="true">/</span><a href="/admin/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? workshop.title : 'Nowy rodzaj' %></nav>
+    <span class="label">Rodzaj warsztatów</span>
+    <h1 class="display"><%= isEdit ? workshop.title : 'Nowy rodzaj warsztatów' %></h1>
+    <%- include('_nav') %>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <% if (formError) { %><div class="notice notice-error" role="alert"><p><%= formError %></p></div><% } %>
+        <% if (Object.keys(errors).length) { %><div class="notice notice-error" role="alert"><p>Popraw zaznaczone pola.</p></div><% } %>
+
+        <form method="post" action="<%= action %>" novalidate>
+          <fieldset class="form-section">
+            <legend class="form-legend">01 · Nazwa i rodzaj</legend>
+            <div class="mb-3">
+              <label class="form-label" for="title">Nazwa</label>
+              <input class="form-control<%= invalid('title') %>" id="title" name="title" maxlength="120" required value="<%= val('title') %>"<%- describedBy('title') %>>
+              <% if (err('title')) { %><div class="invalid-feedback" id="title-err"><%= err('title') %></div><% } %>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="slug">Adres strony</label>
+              <div class="input-group">
+                <span class="input-group-text mono">/warsztaty/</span>
+                <input class="form-control mono<%= invalid('slug') %>" id="slug" name="slug" maxlength="80" value="<%= val('slug') %>" placeholder="z nazwy"<%- describedBy('slug') %>>
+              </div>
+              <% if (err('slug')) { %><div class="invalid-feedback d-block" id="slug-err"><%= err('slug') %></div><% } %>
+              <div class="form-text"><%= isEdit ? 'Zmiana adresu unieważnia stare linki (np. udostępnione na Facebooku).' : 'Puste = utworzony z nazwy.' %></div>
+            </div>
+            <label class="choice">
+              <input class="form-check-input" type="radio" name="kind" value="open"<%- values.kind !== 'request' ? ' checked' : '' %>>
+              <span class="choice-body"><span class="choice-title"><span>Otwarte</span></span><span class="choice-detail">warsztaty z terminami w kalendarzu, zapis na konkretny termin</span></span>
+            </label>
+            <label class="choice">
+              <input class="form-check-input" type="radio" name="kind" value="request"<%- values.kind === 'request' ? ' checked' : '' %>>
+              <span class="choice-body"><span class="choice-title"><span>Na zamówienie</span></span><span class="choice-detail">dla grup, firm, instytucji — formularz „Zapytaj o termin”</span></span>
+            </label>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">02 · Opis</legend>
+            <div class="mb-3">
+              <label class="form-label" for="summary">Krótki opis</label>
+              <textarea class="form-control<%= invalid('summary') %>" id="summary" name="summary" rows="2" maxlength="300" required<%- describedBy('summary') %>><%= val('summary') %></textarea>
+              <% if (err('summary')) { %><div class="invalid-feedback" id="summary-err"><%= err('summary') %></div><% } %>
+              <div class="form-text">Jedno-dwa zdania na listę warsztatów i do wyników wyszukiwania.</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="description">Opis</label>
+              <textarea class="form-control" id="description" name="description" rows="7" maxlength="5000"><%= val('description') %></textarea>
+              <div class="form-text">Pusta linia = nowy akapit.</div>
+            </div>
+            <div>
+              <label class="form-label" for="program">Program</label>
+              <textarea class="form-control<%= invalid('program') %>" id="program" name="program" rows="5" maxlength="3000"<%- describedBy('program') %>><%= val('program') %></textarea>
+              <% if (err('program')) { %><div class="invalid-feedback" id="program-err"><%= err('program') %></div><% } %>
+              <div class="form-text">Jeden punkt w linii (opcjonalnie).</div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">03 · Parametry</legend>
+            <div class="row g-3 mb-3">
+              <div class="col-sm-4">
+                <label class="form-label" for="duration">Czas (minuty)</label>
+                <input class="form-control<%= invalid('duration') %>" id="duration" name="duration" type="number" min="15" max="1440" step="15" value="<%= val('duration') %>"<%- describedBy('duration') %>>
+                <% if (err('duration')) { %><div class="invalid-feedback" id="duration-err"><%= err('duration') %></div><% } %>
+              </div>
+              <div class="col-sm-4">
+                <label class="form-label" for="price">Cena od osoby (zł)</label>
+                <input class="form-control<%= invalid('price') %>" id="price" name="price" inputmode="decimal" maxlength="12" value="<%= val('price') %>" placeholder="puste = wycena"<%- describedBy('price') %>>
+                <% if (err('price')) { %><div class="invalid-feedback" id="price-err"><%= err('price') %></div><% } %>
+              </div>
+              <div class="col-sm-4">
+                <label class="form-label" for="capacity">Limit miejsc</label>
+                <input class="form-control<%= invalid('capacity') %>" id="capacity" name="capacity" type="number" min="1" max="500" required value="<%= val('capacity') %>"<%- describedBy('capacity') %>>
+                <% if (err('capacity')) { %><div class="invalid-feedback" id="capacity-err"><%= err('capacity') %></div><% } %>
+              </div>
+            </div>
+            <% [text('level', 'Poziom', { placeholder: 'np. dla początkujących' }), text('includes', 'W cenie', { placeholder: 'np. materiały, narzędzia, herbata' }), text('takeaway', 'Wychodzisz z', { placeholder: 'np. notes A5 w twardej oprawie' })].forEach((field) => { %>
+            <div class="mb-3">
+              <label class="form-label" for="<%= field.id %>"><%= field.label %></label>
+              <input class="form-control" id="<%= field.id %>" name="<%= field.id %>" maxlength="200" value="<%= val(field.id) %>" placeholder="<%= field.placeholder %>">
+            </div>
+            <% }) %>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">04 · Zdjęcie</legend>
+            <% if (err('image')) { %><div class="text-danger small mb-2"><%= err('image') %></div><% } %>
+            <div class="photo-picker" role="radiogroup" aria-label="Zdjęcie warsztatów">
+              <label class="photo-option photo-option--none">
+                <input type="radio" name="image" value=""<%- !values.image ? ' checked' : '' %>>
+                <span class="photo-none">bez zdjęcia</span>
+              </label>
+              <% imageKeys.forEach((key) => { %>
+              <label class="photo-option" title="<%= imgMeta(key).alt %>">
+                <input type="radio" name="image" value="<%= key %>"<%- values.image === key ? ' checked' : '' %>>
+                <%- img(key, { sizes: '120px', alt: imgMeta(key).alt }) %>
+                <span><%= key %></span>
+              </label>
+              <% }) %>
+            </div>
+            <div class="form-text">Nowe zdjęcia dochodzą przez scripts/images.config.js (npm run images).</div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">05 · Widoczność</legend>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="on"<%- values.is_active ? ' checked' : '' %>>
+              <label class="form-check-label" for="is_active">Widoczne na stronie (razem z terminami)</label>
+            </div>
+            <label class="form-label" for="sort">Kolejność na liście</label>
+            <input class="form-control qty-input<%= invalid('sort') %>" id="sort" name="sort" type="number" value="<%= val('sort') %>"<%- describedBy('sort') %>>
+            <% if (err('sort')) { %><div class="invalid-feedback" id="sort-err"><%= err('sort') %></div><% } %>
+            <div class="form-text">Mniejsza liczba = wyżej.</div>
+          </fieldset>
+
+          <div class="actions">
+            <button class="btn btn-ink" type="submit"><%= isEdit ? 'Zapisz zmiany' : 'Dodaj warsztaty' %></button>
+            <a class="btn btn-line" href="/admin/wydarzenia">Anuluj</a>
+          </div>
+        </form>
+
+        <% if (isEdit) { %>
+        <details class="danger">
+          <summary>Usuń rodzaj warsztatów</summary>
+          <% if (workshop.session_count || workshop.signup_count || sessions.length) { %>
+            <p class="mt-3 mb-0"><%= f.typo('Te warsztaty mają terminy albo zgłoszenia, więc nie można ich usunąć. Odznacz „Widoczne na stronie”, żeby je ukryć.') %></p>
+          <% } else { %>
+            <p class="mt-3"><%= f.typo('Warsztaty znikną ze strony i z panelu. Tego nie da się cofnąć.') %></p>
+            <form method="post" action="/admin/wydarzenia/rodzaje/<%= workshop.id %>/usun" class="m-0">
+              <button class="btn btn-danger-line" type="submit">Usuń na stałe</button>
+            </form>
+          <% } %>
+        </details>
+        <% } %>
+      </div>
+
+      <% if (isEdit) { %>
+      <div class="col-lg-4">
+        <div class="summary-box box">
+          <span class="label">Terminy</span>
+          <% if (sessions.length) { %>
+          <ul class="ship-list mb-3">
+            <% sessions.forEach((s) => { %>
+            <li><a href="/admin/wydarzenia/terminy/<%= s.id %>" class="mono"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a><span class="small text-muted-ink"><%= s.isPast ? 'minął' : s.statusLabel %> · <%= s.taken %>/<%= s.seats %></span></li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <p class="small">Brak terminów.</p>
+          <% } %>
+          <a class="btn btn-line btn-sm w-100" href="/admin/wydarzenia/terminy/nowy?warsztat=<%= workshop.id %>">+ Dodaj termin</a>
+          <% if (workshop.is_active) { %>
+          <p class="mt-3 mb-0"><a class="link-arrow" href="/warsztaty/<%= workshop.slug %>">Zobacz na stronie<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-up-right"></use></svg></a></p>
+          <% } %>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</section>

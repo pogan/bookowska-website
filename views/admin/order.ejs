@@ -4,6 +4,7 @@
     <span class="label">Zamówienie<%= order.payment_provider === 'mock' ? ' testowe' : '' %></span>
     <h1 class="display"><%= order.number %></h1>
     <span class="status-stamp<%= order.status === 'paid' ? '' : ' is-bad' %>"><%= order.statusLabel %></span>
+    <%- include('_nav') %>
     <% if (order.stock_conflict) { %>
       <div class="notice notice-error" role="alert"><p><%= f.typo('Płatność dotarła po wygaśnięciu rezerwacji i części towaru zabrakło. Skontaktuj się z klientem (zwrot albo inny egzemplarz).') %></p></div>
     <% } %>

@@ -1,6 +1,6 @@
-// Panel administracyjny - na tym etapie tylko podgląd: najbliższe terminy z
-// obłożeniem, zgłoszenia na warsztaty i zamówienia. Zarządzanie uczestnikami
-// i ofertą dojdzie w kolejnym etapie (wraz z płatnościami za warsztaty).
+// Panel administracyjny: przegląd (terminy z obłożeniem, zgłoszenia, zamówienia)
+// i zarządzanie wydarzeniami (routes/adminEvents.js). Zarządzanie uczestnikami
+// dojdzie w kolejnym etapie (wraz z płatnościami za warsztaty).
 const express = require('express');
 const site = require('../lib/site');
 const orders = require('../lib/orders');
@@ -30,6 +30,9 @@ router.use((req, res, next) => {
   });
 });
 
+// Wydarzenia: rodzaje warsztatów i terminy (CRUD) - za strażnikiem powyżej.
+router.use('/wydarzenia', require('./adminEvents').router);
+
 router.get('/', (req, res) => {
   orders.expireStale();
   const allOrders = orders.listRecent(200);
@@ -46,6 +49,7 @@ router.get('/', (req, res) => {
     },
     statusLabels: orders.STATUS_LABELS,
     bodyClass: 'page-admin',
+    adminSection: 'przeglad',
   });
 });
 
@@ -58,6 +62,7 @@ router.get('/zamowienia/:number', (req, res, next) => {
     order,
     method: shipping.get(order.shipping_method),
     bodyClass: 'page-admin',
+    adminSection: 'przeglad',
   });
 });
 

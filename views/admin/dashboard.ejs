@@ -5,7 +5,8 @@
   <div class="container">
     <span class="label">Panel pracowni · podgląd</span>
     <h1 class="display">Zgłoszenia i zamówienia</h1>
-    <p class="text-muted-ink"><%= f.typo('Na tym etapie panel pokazuje dane tylko do odczytu. Zgłoszenia potwierdzasz mailowo — każde przyszło też na skrzynkę pracowni.') %></p>
+    <p class="text-muted-ink"><%= f.typo('Zgłoszenia potwierdzasz mailowo — każde przyszło też na skrzynkę pracowni. Terminy i warsztaty edytujesz w zakładce Wydarzenia.') %></p>
+    <%- include('_nav') %>
   </div>
 </section>
 
@@ -26,11 +27,11 @@
         <tbody>
           <% sessions.forEach((s) => { %>
           <tr>
-            <td class="mono"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></td>
+            <td class="mono"><a href="/admin/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a></td>
             <td><%= s.workshop_title %></td>
             <td><%= s.location %></td>
             <td class="mono"><%= s.taken %> / <%= s.seats %></td>
-            <td><%= s.isCancelled ? 'odwołany' : s.isFull ? 'pełny' : 'zapisy otwarte' %></td>
+            <td><%= s.status === 'open' && s.isFull ? 'komplet' : s.statusLabel %></td>
           </tr>
           <% }) %>
         </tbody>

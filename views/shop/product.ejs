@@ -9,15 +9,6 @@
     <div class="row g-5">
       <div class="col-md-6">
         <%- include('../partials/photo', { key: product.images[0], sizes: '(min-width: 1200px) 600px, (min-width: 768px) 50vw, 100vw', ratio: '4x5', color: true, fig: '01', priority: true, alt: product.name }) %>
-        <% if (product.images.length > 1) { %>
-        <div class="row g-2 mt-1">
-          <% product.images.slice(1).forEach((key, i) => { %>
-          <div class="col-12">
-            <%- include('../partials/photo', { key, sizes: '(min-width: 768px) 50vw, 100vw', ratio: '3x2', color: true, fig: String(i + 2).padStart(2, '0'), caption: imgMeta(key).alt }) %>
-          </div>
-          <% }) %>
-        </div>
-        <% } %>
       </div>
 
       <div class="col-md-6 col-lg-5 offset-lg-1">
@@ -70,17 +61,22 @@
 
 <section class="sheet" id="opis">
   <div class="container">
-    <%- include('../partials/sheet-head', { no: '02', title: 'Opis i wymiary' }) %>
+    <%- include('../partials/sheet-head', { no: '01', title: 'Opis i wymiary' }) %>
     <div class="row g-5">
       <div class="col-lg-6 prose">
         <% f.paragraphs(product.description).forEach((p) => { %><p><%= f.typo(p) %></p><% }) %>
         <p class="small text-muted-ink"><%= f.typo('Wysyłka w ciągu 5 dni roboczych: Paczkomat InPost, kurier albo odbiór w pracowni w Sopocie.') %></p>
+        <% product.images.slice(1).forEach((key, i) => { %>
+          <div class="mt-4">
+            <%- include('../partials/photo', { key, sizes: '(min-width: 992px) 600px, 100vw', ratio: '3x2', color: true, fig: String(i + 2).padStart(2, '0'), caption: imgMeta(key).alt }) %>
+          </div>
+        <% }) %>
       </div>
       <% if (drawing) { %>
       <div class="col-lg-5 offset-lg-1">
         <figure class="m-0">
           <%- drawing %>
-          <figcaption class="mono small text-muted-ink mt-2"><span class="text-body">Rys. 03</span> Rzut z przodu<%= product.depth_mm ? ' i z boku' : '' %> · wymiary w mm<%= /półpłócien/i.test(product.binding || '') ? ' · kreskowanie: płótno' : '' %></figcaption>
+          <figcaption class="drawing-caption"><span class="fig">Rys. <%= String(product.images.length + 1).padStart(2, '0') %></span> Rzut z przodu<%= product.depth_mm ? ' i z boku' : '' %> · wymiary w mm<%= /półpłócien/i.test(product.binding || '') ? ' · kreskowanie: płótno' : '' %></figcaption>
         </figure>
       </div>
       <% } %>

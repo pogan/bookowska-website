@@ -22,7 +22,7 @@
       <div class="col-lg-8">
         <table class="lines">
           <thead>
-            <tr><th scope="col">Produkt</th><th scope="col" class="num">Cena</th><th scope="col">Ilość</th><th scope="col" class="num">Razem</th><th scope="col"><span class="visually-hidden">Usuń</span></th></tr>
+            <tr><th scope="col">Produkt</th><th scope="col" class="num">Cena</th><th scope="col" class="qty">Ilość</th><th scope="col" class="num">Razem</th><th scope="col"><span class="visually-hidden">Usuń</span></th></tr>
           </thead>
           <tbody>
             <% summary.lines.forEach(({ product, quantity, total }) => { %>
@@ -37,7 +37,7 @@
                 </div>
               </td>
               <td class="num"><%= f.money(product.price) %></td>
-              <td>
+              <td class="qty">
                 <% if (product.maxQuantity > 1) { %>
                 <form method="post" action="/koszyk/zmien" class="qty-form" data-autosubmit>
                   <input type="hidden" name="product" value="<%= product.id %>">

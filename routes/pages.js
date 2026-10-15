@@ -48,6 +48,7 @@ router.get('/regulamin', (req, res) => {
     title: `Regulamin sklepu | ${site.name}`,
     description: 'Regulamin sklepu internetowego pracowni introligatorskiej Bookowska.',
     canonicalPath: '/regulamin',
+    jsonLd: [seo.breadcrumbs([{ name: 'Start', path: '/' }, { name: 'Regulamin sklepu', path: '/regulamin' }])],
     shippingMethods: shipping.METHODS,
     pendingMinutes: orders.PENDING_TTL_MINUTES,
   });
@@ -58,6 +59,7 @@ router.get('/polityka-prywatnosci', (req, res) => {
     title: `Polityka prywatności | ${site.name}`,
     description: 'Jak pracownia Bookowska przetwarza dane osobowe: zgłoszenia na warsztaty, zamówienia, pliki cookies.',
     canonicalPath: '/polityka-prywatnosci',
+    jsonLd: [seo.breadcrumbs([{ name: 'Start', path: '/' }, { name: 'Polityka prywatności', path: '/polityka-prywatnosci' }])],
   });
 });
 

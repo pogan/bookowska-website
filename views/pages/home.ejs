@@ -72,7 +72,7 @@
         <a class="link-arrow" href="/sklep">Cały sklep<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
       </div>
     </div>
-    <div class="products">
+    <div class="products products--featured">
       <% products.forEach((product) => { %><%- include('../partials/product-card', { product }) %><% }) %>
     </div>
   </div>

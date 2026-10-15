@@ -90,9 +90,22 @@ hr {
   opacity: 1;
 }
 
+.container {
+  --bs-gutter-x: 2rem;
+}
+
 @media (min-width: 1400px) {
   .container {
     max-width: 1240px;
+  }
+}
+
+/* .g-5 daje rzędom ujemny margines 1,5rem - na telefonie większy niż wcięcie
+   kontenera, co powodowało poziome przewijanie. */
+@media (max-width: 575.98px) {
+  .g-5,
+  .gx-5 {
+    --bs-gutter-x: 1.5rem;
   }
 }
 
@@ -580,6 +593,21 @@ a:focus-visible .photo--hover-color .photo-frame img {
   white-space: nowrap;
 }
 
+.drawing-caption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.6rem;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+.drawing-caption .fig {
+  color: var(--ink);
+}
+
 .photo-strip {
   display: grid;
   gap: 0.5rem;
@@ -684,7 +712,7 @@ a:focus-visible .photo--hover-color .photo-frame img {
 
 @media (min-width: 992px) {
   .session {
-    grid-template-columns: 11.5rem 1fr 10rem 5.5rem 9rem;
+    grid-template-columns: 11.5rem 1fr 13.5rem 5.5rem 9rem;
     grid-template-areas: "date title seats price action";
   }
 }
@@ -785,6 +813,13 @@ a:focus-visible .photo--hover-color .photo-frame img {
   display: grid;
   gap: 2.75rem 1.5rem;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+}
+
+/* Wyróżnione produkty na stronie głównej - zawsze pełny rząd. */
+@media (min-width: 768px) {
+  .products--featured {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .product-card a {
@@ -934,6 +969,11 @@ a:focus-visible .photo--hover-color .photo-frame img {
   padding: 1rem 0.5rem 1rem 0;
   border-bottom: 1px solid var(--line-soft);
   vertical-align: middle;
+}
+
+.lines .qty {
+  text-align: center;
+  padding-inline: 1rem;
 }
 
 .lines .num {
@@ -1201,8 +1241,13 @@ a:focus-visible .photo--hover-color .photo-frame img {
 /* --- Stopka: tabliczka rysunkowa ------------------------------------------ */
 
 .site-footer {
-  margin-top: clamp(4rem, 9vw, 7.5rem);
-  padding-bottom: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-block: clamp(2.5rem, 6vw, 4rem) 2.5rem;
+}
+
+main > .sheet:last-child,
+main > section:last-child {
+  padding-bottom: clamp(3rem, 7vw, 5.5rem);
 }
 
 .footer-cta {
@@ -1355,4 +1400,9 @@ a:focus-visible .photo--hover-color .photo-frame img {
 /* Z JS zmiana ilości w koszyku zapisuje się sama - przycisk "Zmień" zbędny. */
 .js form[data-autosubmit] .btn-text {
   display: none;
+}
+
+/* Ostatnia sekcja z dolną linią + górna linia stopki = podwójna kreska. */
+main > section.rule-bottom:last-child {
+  border-bottom: 0;
 }

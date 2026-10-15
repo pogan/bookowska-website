@@ -140,6 +140,8 @@ router.get('/zamowienie/:token', (req, res, next) => {
   if (order.status === 'paid' && req.session.pendingOrder === order.token) {
     cart.clear(req.session);
     delete req.session.pendingOrder;
+    // Licznik w nagłówku policzył middleware jeszcze przed wyczyszczeniem koszyka.
+    res.locals.cartCount = 0;
   }
   res.page('shop/order', {
     title: `Zamówienie ${order.number} | ${site.name}`,

@@ -1,0 +1,12 @@
+<section class="sheet grid-paper rule-bottom">
+  <div class="container">
+    <div class="gateway">
+      <span class="label">Panel pracowni</span>
+      <h1 class="h-section">Brak dostępu</h1>
+      <p><%= f.typo(`Konto ${user.email} nie ma uprawnień do panelu.`) %></p>
+      <form method="post" action="/logout" class="mt-3">
+        <button class="btn btn-line w-100" type="submit">Wyloguj</button>
+      </form>
+    </div>
+  </div>
+</section>

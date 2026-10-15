@@ -1,0 +1,47 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/admin">Panel</a><span aria-hidden="true">/</span><%= order.number %></nav>
+    <span class="label">Zamówienie<%= order.payment_provider === 'mock' ? ' testowe' : '' %></span>
+    <h1 class="display"><%= order.number %></h1>
+    <span class="status-stamp<%= order.status === 'paid' ? '' : ' is-bad' %>"><%= order.statusLabel %></span>
+    <% if (order.stock_conflict) { %>
+      <div class="notice notice-error" role="alert"><p><%= f.typo('Płatność dotarła po wygaśnięciu rezerwacji i części towaru zabrakło. Skontaktuj się z klientem (zwrot albo inny egzemplarz).') %></p></div>
+    <% } %>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-7">
+        <ul class="ship-list">
+          <% order.items.forEach((i) => { %>
+          <li><span><%= i.quantity %> × <a href="/sklep/<%= i.slug %>"><%= i.name %></a></span><span class="mono"><%= f.money(i.unit_price * i.quantity) %></span></li>
+          <% }) %>
+        </ul>
+        <dl class="totals mt-3">
+          <div><dt>Produkty</dt><dd><%= f.money(order.subtotal) %></dd></div>
+          <div><dt>Dostawa: <%= method ? method.label : order.shipping_method %></dt><dd><%= f.money(order.shipping_cost) %></dd></div>
+          <div class="grand"><dt>Razem</dt><dd><%= f.money(order.total) %></dd></div>
+        </dl>
+      </div>
+      <div class="col-lg-5">
+        <table class="spec-table">
+          <tbody>
+            <tr><th scope="row">Klient</th><td><%= order.customer_name %></td></tr>
+            <tr><th scope="row">E-mail</th><td><a href="mailto:<%= order.email %>?subject=<%= encodeURIComponent(`Zamówienie ${order.number}`) %>"><%= order.email %></a></td></tr>
+            <tr><th scope="row">Telefon</th><td><%= order.phone || '—' %></td></tr>
+            <% if (order.parcel_locker) { %><tr><th scope="row">Paczkomat</th><td class="mono"><%= order.parcel_locker %></td></tr><% } %>
+            <% if (order.address) { %><tr><th scope="row">Adres</th><td><%= order.address.street %><br><%= order.address.postcode %> <%= order.address.city %></td></tr><% } %>
+            <tr><th scope="row">Uwagi</th><td><%= order.notes || '—' %></td></tr>
+            <tr><th scope="row">Złożone</th><td class="mono"><%= f.dateTime(order.created_at) %></td></tr>
+            <tr><th scope="row">Opłacone</th><td class="mono"><%= order.paid_at ? f.dateTime(order.paid_at) : '—' %></td></tr>
+            <tr><th scope="row">Płatność</th><td class="mono small"><%= order.payment_provider %> · <%= order.payment_ref || '—' %></td></tr>
+            <tr><th scope="row">E-maile</th><td class="small">klient: <%= order.customer_email_sent_at ? f.dateTime(order.customer_email_sent_at) : 'nie wysłano' %><br>pracownia: <%= order.studio_email_sent_at ? f.dateTime(order.studio_email_sent_at) : 'nie wysłano' %></td></tr>
+          </tbody>
+        </table>
+        <p><a class="link-arrow" href="/zamowienie/<%= order.token %>">Strona statusu dla klienta</a></p>
+      </div>
+    </div>
+  </div>
+</section>

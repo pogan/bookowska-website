@@ -1,0 +1,78 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span><a href="/sklep">Sklep</a><span aria-hidden="true">/</span>Koszyk</nav>
+    <span class="label">Krok 1 z 3 · koszyk</span>
+    <h1 class="display">Koszyk</h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <% summary.notices.forEach((n) => { %>
+      <div class="notice notice-warning" role="status"><p><%= n %></p></div>
+    <% }) %>
+
+    <% if (!summary.lines.length) { %>
+      <div class="box box-dashed">
+        <p><%= f.typo('Koszyk jest pusty.') %></p>
+        <a class="btn btn-line" href="/sklep">Przejdź do sklepu</a>
+      </div>
+    <% } else { %>
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <table class="lines">
+          <thead>
+            <tr><th scope="col">Produkt</th><th scope="col" class="num">Cena</th><th scope="col">Ilość</th><th scope="col" class="num">Razem</th><th scope="col"><span class="visually-hidden">Usuń</span></th></tr>
+          </thead>
+          <tbody>
+            <% summary.lines.forEach(({ product, quantity, total }) => { %>
+            <tr>
+              <td class="line-main">
+                <div class="line-product">
+                  <a class="line-thumb" href="/sklep/<%= product.slug %>"><%- img(product.images[0], { sizes: '64px', alt: '' }) %></a>
+                  <div>
+                    <a href="/sklep/<%= product.slug %>"><%= product.name %></a>
+                    <% if (product.unique) { %><span class="badge-line">1 egz.</span><% } %>
+                  </div>
+                </div>
+              </td>
+              <td class="num"><%= f.money(product.price) %></td>
+              <td>
+                <% if (product.maxQuantity > 1) { %>
+                <form method="post" action="/koszyk/zmien" class="qty-form" data-autosubmit>
+                  <input type="hidden" name="product" value="<%= product.id %>">
+                  <label class="visually-hidden" for="qty-<%= product.id %>">Ilość: <%= product.name %></label>
+                  <input class="form-control form-control-sm qty-input" id="qty-<%= product.id %>" name="quantity" type="number" min="0" max="<%= product.maxQuantity %>" value="<%= quantity %>">
+                  <button class="btn-text" type="submit">Zmień</button>
+                </form>
+                <% } else { %>
+                <span class="mono"><%= quantity %></span>
+                <% } %>
+              </td>
+              <td class="num"><%= f.money(total) %></td>
+              <td class="text-end">
+                <form method="post" action="/koszyk/usun" class="m-0">
+                  <input type="hidden" name="product" value="<%= product.id %>">
+                  <button class="btn-text" type="submit" aria-label="Usuń: <%= product.name %>">Usuń</button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <p class="mt-3"><a class="link-arrow" href="/sklep"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-left"></use></svg>Wróć do sklepu</a></p>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="summary-box">
+          <dl class="totals">
+            <div><dt>Produkty</dt><dd><%= f.money(summary.subtotal) %></dd></div>
+            <div><dt>Dostawa</dt><dd class="text-muted-ink">w następnym kroku</dd></div>
+          </dl>
+          <a class="btn btn-ink w-100 mt-4" href="/zamowienie">Przejdź do zamówienia<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</section>

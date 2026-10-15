@@ -1,0 +1,45 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>Polityka prywatności</nav>
+    <span class="label">Dokument</span>
+    <h1 class="display">Polityka prywatności</h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 prose">
+        <div class="notice notice-warning">
+          <span class="notice-title">Projekt</span>
+          <p><%= f.typo('Projekt polityki prywatności do weryfikacji przed uruchomieniem serwisu.') %></p>
+        </div>
+
+        <h2>Administrator danych</h2>
+        <p><%= f.typo('Administratorem danych osobowych jest') %> <%- include('_seller') %>.</p>
+
+        <h2>Jakie dane i po co</h2>
+        <h3>Zgłoszenia na warsztaty</h3>
+        <p><%= f.typo('Imię i nazwisko, e-mail, opcjonalnie telefon, liczba osób i treść wiadomości — po to, by zarezerwować miejsce, potwierdzić udział i ustalić szczegóły (art. 6 ust. 1 lit. b RODO). Dane przechowujemy do zakończenia warsztatów, a następnie przez okres przedawnienia ewentualnych roszczeń.') %></p>
+        <h3>Zamówienia w sklepie</h3>
+        <p><%= f.typo('Imię i nazwisko, e-mail, telefon, adres dostawy lub kod paczkomatu — w celu realizacji umowy (art. 6 ust. 1 lit. b RODO), wypełnienia obowiązków podatkowych i księgowych (art. 6 ust. 1 lit. c RODO) oraz obsługi reklamacji i roszczeń (art. 6 ust. 1 lit. f RODO). Dokumenty księgowe przechowujemy przez okres wymagany przepisami (zasadniczo 5 lat od końca roku podatkowego).') %></p>
+        <h3>Korespondencja</h3>
+        <p><%= f.typo('Dane z wiadomości e-mail przetwarzamy, by odpowiedzieć na pytania (art. 6 ust. 1 lit. f RODO — prawnie uzasadniony interes).') %></p>
+        <h3>Logi serwera</h3>
+        <p><%= f.typo('Serwer zapisuje techniczne informacje o żądaniach (m.in. adres IP i czas), wyłącznie w celu zapewnienia bezpieczeństwa i diagnozowania błędów (art. 6 ust. 1 lit. f RODO).') %></p>
+
+        <h2>Odbiorcy danych</h2>
+        <p><%= f.typo('Dane mogą trafić do podmiotów, które pomagają nam prowadzić serwis: dostawcy hostingu i poczty e-mail, przewoźnika (InPost lub firmy kurierskiej — przy zamówieniach z dostawą), operatora płatności (po jego wyborze) oraz biura rachunkowego. Nie sprzedajemy danych i nie używamy ich do profilowania.') %></p>
+
+        <h2>Twoje prawa</h2>
+        <p><%= f.typo('Masz prawo dostępu do danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia oraz sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie. Masz też prawo wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa). Podanie danych jest dobrowolne, ale niezbędne do zapisu na warsztaty lub realizacji zamówienia.') %></p>
+
+        <h2 id="cookies">Pliki cookies</h2>
+        <p><%= f.typo('Serwis nie używa cookies analitycznych ani marketingowych. Jedyny plik cookie') %> (<code>bookowska.sid</code>) <%= f.typo('powstaje dopiero wtedy, gdy dodasz produkt do koszyka (albo zaloguje się administrator) — przechowuje identyfikator sesji, bez którego koszyk nie działa. To cookie niezbędne, dlatego nie wymaga zgody. Wygasa po 14 dniach.') %></p>
+
+        <h2>Linki zewnętrzne</h2>
+        <p><%= f.typo('Strona zawiera linki do profili w serwisach Instagram i Facebook. Po przejściu do nich obowiązują zasady prywatności tych serwisów.') %></p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,89 @@
+<section class="page-head pb-0">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span><a href="/sklep">Sklep</a><span aria-hidden="true">/</span><%= product.name %></nav>
+  </div>
+</section>
+
+<section class="sheet pt-3">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-6">
+        <%- include('../partials/photo', { key: product.images[0], sizes: '(min-width: 1200px) 600px, (min-width: 768px) 50vw, 100vw', ratio: '4x5', color: true, fig: '01', priority: true, alt: product.name }) %>
+        <% if (product.images.length > 1) { %>
+        <div class="row g-2 mt-1">
+          <% product.images.slice(1).forEach((key, i) => { %>
+          <div class="col-12">
+            <%- include('../partials/photo', { key, sizes: '(min-width: 768px) 50vw, 100vw', ratio: '3x2', color: true, fig: String(i + 2).padStart(2, '0'), caption: imgMeta(key).alt }) %>
+          </div>
+          <% }) %>
+        </div>
+        <% } %>
+      </div>
+
+      <div class="col-md-6 col-lg-5 offset-lg-1">
+        <div class="summary-box">
+          <span class="label">Sklep · <%= product.unique ? 'egzemplarz jedyny' : 'rękodzieło' %></span>
+          <h1 class="h-section"><%= f.typo(product.name) %></h1>
+          <p class="price-tag"><%= f.money(product.price) %></p>
+          <p class="availability">
+            <% if (!product.available) { %>Wyprzedane
+            <% } else if (product.stock === null) { %>Dostępny
+            <% } else if (product.unique) { %>Dostępny — ostatni egzemplarz
+            <% } else { %>Dostępne: <%= product.stock %> szt.<% } %>
+          </p>
+          <p><%= f.typo(product.summary) %></p>
+
+          <% if (product.available) { %>
+          <form method="post" action="/koszyk/dodaj" class="d-flex flex-wrap gap-2 align-items-end my-4">
+            <input type="hidden" name="product" value="<%= product.id %>">
+            <% if (product.maxQuantity > 1) { %>
+            <div>
+              <label class="form-label" for="quantity">Ilość</label>
+              <input class="form-control qty-input" id="quantity" name="quantity" type="number" min="1" max="<%= product.maxQuantity %>" value="1">
+            </div>
+            <% } else { %>
+            <input type="hidden" name="quantity" value="1">
+            <% } %>
+            <button class="btn btn-ink" type="submit"<%- inCart >= product.maxQuantity ? ' disabled' : '' %>>
+              <svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-bag"></use></svg><%= inCart >= product.maxQuantity ? 'W koszyku' : 'Do koszyka' %>
+            </button>
+            <% if (inCart) { %><a class="btn btn-line" href="/koszyk">Koszyk [<%= cartCount %>]</a><% } %>
+          </form>
+          <% } else { %>
+          <p class="my-4"><%= f.typo('Ten egzemplarz znalazł już właściciela. Podobny mogę uszyć na zamówienie —') %> <a href="/kontakt">napisz</a>.</p>
+          <% } %>
+
+          <table class="spec-table">
+            <tbody>
+              <% if (product.width_mm && product.height_mm) { %><tr><th scope="row">Format</th><td><%= product.width_mm %> × <%= product.height_mm %> mm<% if (product.width_mm === 148 && product.height_mm === 210) { %> (A5)<% } %></td></tr><% } %>
+              <% if (product.depth_mm) { %><tr><th scope="row">Grubość</th><td><%= product.depth_mm %> mm</td></tr><% } %>
+              <% if (product.sheets) { %><tr><th scope="row">Blok</th><td><%= product.sheets %> <%= f.plural(product.sheets, 'karta', 'karty', 'kart') %></td></tr><% } %>
+              <% if (product.paper) { %><tr><th scope="row">Papier</th><td><%= product.paper %></td></tr><% } %>
+              <% if (product.binding) { %><tr><th scope="row">Oprawa</th><td><%= product.binding %></td></tr><% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="opis">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '02', title: 'Opis i wymiary' }) %>
+    <div class="row g-5">
+      <div class="col-lg-6 prose">
+        <% f.paragraphs(product.description).forEach((p) => { %><p><%= f.typo(p) %></p><% }) %>
+        <p class="small text-muted-ink"><%= f.typo('Wysyłka w ciągu 5 dni roboczych: Paczkomat InPost, kurier albo odbiór w pracowni w Sopocie.') %></p>
+      </div>
+      <% if (drawing) { %>
+      <div class="col-lg-5 offset-lg-1">
+        <figure class="m-0">
+          <%- drawing %>
+          <figcaption class="mono small text-muted-ink mt-2"><span class="text-body">Rys. 03</span> Rzut z przodu<%= product.depth_mm ? ' i z boku' : '' %> · wymiary w mm<%= /półpłócien/i.test(product.binding || '') ? ' · kreskowanie: płótno' : '' %></figcaption>
+        </figure>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,80 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>Regulamin</nav>
+    <span class="label">Dokument</span>
+    <h1 class="display">Regulamin sklepu</h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 prose">
+        <div class="notice notice-warning">
+          <span class="notice-title">Projekt</span>
+          <p><%= f.typo('Projekt regulaminu do weryfikacji przed uruchomieniem sprzedaży. Sklep działa obecnie w trybie testowym — płatności są symulowane, a zamówienia nie są realizowane.') %></p>
+        </div>
+
+        <h2>§ 1. Sprzedawca</h2>
+        <p><%= f.typo('Sklep internetowy dostępny pod adresem') %> <a href="<%= baseUrl %>"><%= baseUrl.replace(/^https?:\/\//, '') %></a> <%= f.typo('prowadzi') %> <%- include('_seller') %>.</p>
+
+        <h2>§ 2. Definicje i zakres</h2>
+        <ol>
+          <li><%= f.typo('Regulamin określa zasady korzystania ze sklepu, składania zamówień, dostawy, płatności, odstąpienia od umowy i reklamacji.') %></li>
+          <li><%= f.typo('Klient to osoba fizyczna, osoba prawna albo jednostka organizacyjna składająca zamówienie. Konsument to klient będący osobą fizyczną, który zawiera umowę niezwiązaną bezpośrednio z jego działalnością gospodarczą lub zawodową.') %></li>
+          <li><%= f.typo('Do korzystania ze sklepu potrzebne są: urządzenie z dostępem do internetu, aktualna przeglądarka internetowa i adres e-mail.') %></li>
+          <li><%= f.typo('Zapisy na warsztaty odbywają się przez osobny formularz i nie są zamówieniem w sklepie — ich zasady ustalamy indywidualnie w korespondencji e-mail.') %></li>
+        </ol>
+
+        <h2>§ 3. Zamówienia i zawarcie umowy</h2>
+        <ol>
+          <li><%= f.typo('Informacje o produktach w sklepie stanowią zaproszenie do zawarcia umowy. Wiele produktów to egzemplarze jedyne — wzór papieru marmurkowego czy płótna może się różnić od zdjęcia w granicach naturalnych dla rękodzieła.') %></li>
+          <li><%= f.typo('Aby złożyć zamówienie, należy dodać produkty do koszyka, podać dane kontaktowe, wybrać formę dostawy, zaakceptować regulamin i kliknąć „Zamawiam i płacę”.') %></li>
+          <li><%= f.typo('Po złożeniu zamówienia produkty są rezerwowane na') %> <%= pendingMinutes %> <%= f.typo('minut. Brak płatności w tym czasie anuluje zamówienie.') %></li>
+          <li><%= f.typo('Umowa zostaje zawarta z chwilą potwierdzenia płatności. Potwierdzenie zamówienia wraz z treścią umowy wysyłamy na podany adres e-mail.') %></li>
+        </ol>
+
+        <h2>§ 4. Ceny i płatności</h2>
+        <ol>
+          <li><%= f.typo('Ceny podane w sklepie są cenami końcowymi w złotych polskich. Koszt dostawy jest widoczny przed złożeniem zamówienia i doliczany do jego wartości.') %></li>
+          <li><%= f.typo('Płatność odbywa się z góry, za pośrednictwem operatora płatności wskazanego na stronie zamówienia.') %> <em><%= f.typo('[uzupełnij po wyborze operatora: nazwa operatora i dostępne metody płatności]') %></em></li>
+        </ol>
+
+        <h2>§ 5. Dostawa</h2>
+        <ol>
+          <li><%= f.typo('Wysyłamy na terenie Polski. Dostępne formy dostawy i ich koszty:') %>
+            <ul>
+              <% shippingMethods.forEach((m) => { %><li><%= m.label %> — <%= f.money(m.price) %></li><% }) %>
+            </ul>
+          </li>
+          <li><%= f.typo('Zamówienie wysyłamy w ciągu 5 dni roboczych od zaksięgowania płatności. Czas doręczenia przez przewoźnika to zwykle 1–2 dni robocze.') %></li>
+        </ol>
+
+        <h2>§ 6. Odstąpienie od umowy</h2>
+        <ol>
+          <li><%= f.typo('Konsument może odstąpić od umowy bez podawania przyczyny w terminie 14 dni od dnia otrzymania produktu. Wystarczy wysłać oświadczenie, np. e-mailem, przed upływem tego terminu.') %></li>
+          <li><%= f.typo('Zwracamy wszystkie płatności, w tym koszt najtańszej oferowanej dostawy, w ciągu 14 dni od otrzymania oświadczenia — tą samą metodą, której użył konsument. Możemy wstrzymać zwrot do chwili otrzymania produktu lub dowodu jego odesłania.') %></li>
+          <li><%= f.typo('Konsument odsyła produkt na własny koszt w ciągu 14 dni od odstąpienia i odpowiada za zmniejszenie jego wartości wynikające z korzystania w sposób wykraczający poza konieczny do stwierdzenia charakteru i właściwości produktu.') %></li>
+          <li><%= f.typo('Prawo odstąpienia nie przysługuje w przypadku produktów wykonanych według specyfikacji konsumenta lub służących zaspokojeniu jego zindywidualizowanych potrzeb (zamówienia indywidualne).') %></li>
+        </ol>
+
+        <h2>§ 7. Reklamacje</h2>
+        <ol>
+          <li><%= f.typo('Odpowiadamy za zgodność produktu z umową. Reklamację można złożyć e-mailem, opisując problem i oczekiwany sposób jego rozwiązania (naprawa, wymiana, obniżenie ceny lub odstąpienie od umowy).') %></li>
+          <li><%= f.typo('Na reklamację odpowiadamy w ciągu 14 dni od jej otrzymania.') %></li>
+          <li><%= f.typo('Konsument może skorzystać z pozasądowych sposobów rozpatrywania sporów, m.in. z pomocy miejskiego lub powiatowego rzecznika konsumentów albo wojewódzkiego inspektoratu Inspekcji Handlowej.') %></li>
+        </ol>
+
+        <h2>§ 8. Przedsiębiorcy na prawach konsumenta</h2>
+        <p><%= f.typo('Postanowienia dotyczące konsumentów (odstąpienie od umowy, reklamacje, niedozwolone postanowienia umowne) stosuje się także do osoby fizycznej zawierającej umowę bezpośrednio związaną z jej działalnością gospodarczą, gdy z treści umowy wynika, że nie ma ona dla tej osoby charakteru zawodowego.') %></p>
+
+        <h2>§ 9. Postanowienia końcowe</h2>
+        <ol>
+          <li><%= f.typo('Zasady przetwarzania danych osobowych opisuje') %> <a href="/polityka-prywatnosci">polityka prywatności</a>.</li>
+          <li><%= f.typo('Zmiany regulaminu nie dotyczą zamówień złożonych przed ich wejściem w życie.') %></li>
+          <li><%= f.typo('W sprawach nieuregulowanych stosuje się przepisy prawa polskiego, w szczególności Kodeksu cywilnego i ustawy o prawach konsumenta.') %></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+<%#
+  Zdjęcie ze znacznikami cięcia i podpisem "Rys.".
+  Parametry: key, sizes, fig (numer rysunku), caption, ratio ('4x5'|'3x2'|'1x1'),
+  color (zawsze w kolorze), hoverColor (kolor po najechaniu), priority, alt,
+  credit (false = bez podpisu autora zdjęcia, gdy sekcja ma wspólny).
+%>
+<%
+  const meta = imgMeta(key);
+  const classes = ['photo'];
+  if (typeof ratio !== 'undefined' && ratio) classes.push('ratio-' + ratio);
+  if (typeof color !== 'undefined' && color) classes.push('photo--color');
+  if (typeof hoverColor !== 'undefined' && hoverColor) classes.push('photo--hover-color');
+  const showCredit = Boolean(meta.credit) && (typeof credit === 'undefined' || credit !== false);
+  const hasCaption = (typeof caption !== 'undefined' && caption) || (typeof fig !== 'undefined' && fig) || showCredit;
+%>
+<figure class="<%= classes.join(' ') %>">
+  <div class="photo-frame">
+    <%- img(key, {
+      sizes: typeof sizes !== 'undefined' ? sizes : '100vw',
+      alt: typeof alt !== 'undefined' ? alt : undefined,
+      priority: typeof priority !== 'undefined' && priority,
+    }) %>
+  </div>
+  <% if (hasCaption) { %>
+  <figcaption>
+    <% if (typeof fig !== 'undefined' && fig) { %><span class="fig">Rys. <%= fig %></span><% } %>
+    <% if (typeof caption !== 'undefined' && caption) { %><span><%= caption %></span><% } %>
+    <% if (showCredit) { %><span><%= meta.credit %></span><% } %>
+  </figcaption>
+  <% } %>
+</figure>

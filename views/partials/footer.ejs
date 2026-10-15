@@ -1,0 +1,54 @@
+<%# Stopka jako tabliczka rysunkowa (pole opisowe w prawym dolnym rogu arkusza). %>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-cta">
+      <p class="h-section"><%= f.typo('Masz pomysł na książkę, album albo notes? Napisz.') %></p>
+      <% if (contact.email) { %>
+        <a class="btn btn-ink" href="mailto:<%= contact.email %>">
+          <svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-envelope"></use></svg><%= contact.email %>
+        </a>
+      <% } else { %>
+        <a class="btn btn-ink" href="/kontakt">Kontakt</a>
+      <% } %>
+    </div>
+
+    <div class="title-block">
+      <div class="tb-cell tb-name">
+        <span class="tb-label">Pracownia</span>
+        <img src="/images/logo-wordmark.svg" alt="<%= site.name %>" width="114" height="18">
+        <span><%= site.tagline %></span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">Prowadzi</span>
+        <span><%= site.owner %></span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">Miejsce</span>
+        <span><%= contact.studioAddress || site.city %></span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">E-mail</span>
+        <% if (contact.email) { %><a href="mailto:<%= contact.email %>"><%= contact.email %></a><% } else { %><a href="/kontakt">kontakt</a><% } %>
+      </div>
+      <% site.social.forEach((s) => { %>
+      <div class="tb-cell">
+        <span class="tb-label"><%= s.label %></span>
+        <a href="<%= s.url %>" rel="noopener" target="_blank"><%= s.handle %></a>
+      </div>
+      <% }) %>
+      <div class="tb-cell">
+        <span class="tb-label"><%= contact.phone ? 'Telefon' : 'Od roku' %></span>
+        <% if (contact.phone) { %><a href="tel:<%= contact.phone.replace(/[^\d+]/g, '') %>"><%= contact.phone %></a><% } else { %><span><%= site.since %></span><% } %>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">Dokumenty</span>
+        <a href="/regulamin">Regulamin sklepu</a>
+        <a href="/polityka-prywatnosci">Polityka prywatności</a>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">Arkusz · skala 1:1</span>
+        <span class="tb-small">© <%= new Date().getFullYear() %> · <%= appVersion.label %></span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,26 @@
+# Na podstawie HTML5 Boilerplate 9.0.1 (.gitattributes) - przycięte do typów
+# plików, które faktycznie występują w tym repozytorium.
+* text=auto
+
+*.css      text
+*.ejs      text
+*.html     text
+*.js       text
+*.json     text
+*.md       text
+*.sql      text
+*.svg      text
+*.txt      text
+*.xml      text
+*.yml      text
+*.sh       text eol=lf
+
+*.ico      binary
+*.jpg      binary
+*.jpeg     binary
+*.png      binary
+*.webp     binary
+*.woff     binary
+*.woff2    binary
+*.pdf      binary
+*.ai       binary

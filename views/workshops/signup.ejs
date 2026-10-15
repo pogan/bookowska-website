@@ -1,0 +1,106 @@
+<%
+  const err = (field) => errors[field];
+  const invalid = (field) => (errors[field] ? ' is-invalid' : '');
+  const val = (field) => (values[field] ?? '');
+  const action = `/warsztaty/${workshop.slug}/zapis${session ? `?termin=${session.id}` : ''}`;
+%>
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span><a href="/warsztaty">Warsztaty</a><span aria-hidden="true">/</span><a href="/warsztaty/<%= workshop.slug %>"><%= workshop.title %></a><span aria-hidden="true">/</span><%= session ? 'Zapis' : 'Zapytanie' %></nav>
+    <span class="label"><%= session ? 'Zapis na warsztaty' : 'Zapytanie' %></span>
+    <h1 class="display"><%= f.typo(workshop.title) %></h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5 flex-lg-row-reverse">
+      <div class="col-lg-4 offset-lg-1">
+        <div class="summary-box">
+          <% if (session) { %>
+          <table class="spec-table">
+            <tbody>
+              <tr><th scope="row">Termin</th><td><%= f.dateLong(session.starts_at) %></td></tr>
+              <tr><th scope="row">Godziny</th><td><%= f.time(session.starts_at) %>–<%= f.time(session.ends_at) %></td></tr>
+              <tr><th scope="row">Miejsce</th><td><%= session.location %></td></tr>
+              <% if (session.price) { %><tr><th scope="row">Cena</th><td><%= f.money(session.price) %> od osoby</td></tr><% } %>
+              <tr><th scope="row">Wolne miejsca</th><td><%= session.seatsLeft %> z <%= session.seats %></td></tr>
+            </tbody>
+          </table>
+          <p class="small text-muted-ink"><%= f.typo('To jeszcze nie płatność. Miejsce rezerwuję wstępnie, a w ciągu dwóch dni roboczych odpiszę z potwierdzeniem i danymi do przelewu.') %></p>
+          <% } else { %>
+          <p class="small text-muted-ink"><%= f.typo(workshop.isRequest
+            ? 'Napisz, ilu osób dotyczy zapytanie, w jakim terminie i gdzie — przygotuję propozycję programu i wycenę.'
+            : 'Napisz, który termin by Ci pasował — dam znać, gdy pojawi się kolejna edycja albo zwolni się miejsce.') %></p>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="col-lg-7">
+        <% if (typeof unavailableSession !== 'undefined' && unavailableSession) { %>
+        <div class="notice notice-warning" role="status">
+          <span class="notice-title">Termin <%= f.dateNum(unavailableSession.starts_at) %></span>
+          <p><%= unavailableSession.isFull
+            ? 'Ten termin jest już pełny. Zostaw wiadomość — dopiszę Cię do listy rezerwowej albo zaproponuję kolejny.'
+            : 'Na ten termin nie można się już zapisać. Zostaw wiadomość — dam znać o kolejnym.' %></p>
+        </div>
+        <% } %>
+        <% if (formError) { %>
+        <div class="notice notice-error" role="alert"><p><%= formError %></p></div>
+        <% } %>
+        <% if (Object.keys(errors).length) { %>
+        <div class="notice notice-error" role="alert"><p>Popraw zaznaczone pola formularza.</p></div>
+        <% } %>
+
+        <form method="post" action="<%= action %>" novalidate>
+          <fieldset class="form-section">
+            <legend class="form-legend">01 · Dane kontaktowe</legend>
+            <div class="mb-3">
+              <label class="form-label" for="name">Imię i nazwisko</label>
+              <input class="form-control<%= invalid('name') %>" id="name" name="name" autocomplete="name" required maxlength="100" value="<%= val('name') %>"<%- err('name') ? ' aria-describedby="name-err"' : '' %>>
+              <% if (err('name')) { %><div class="invalid-feedback" id="name-err"><%= err('name') %></div><% } %>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-7">
+                <label class="form-label" for="email">E-mail</label>
+                <input class="form-control<%= invalid('email') %>" id="email" name="email" type="email" autocomplete="email" required maxlength="200" value="<%= val('email') %>"<%- err('email') ? ' aria-describedby="email-err"' : '' %>>
+                <% if (err('email')) { %><div class="invalid-feedback" id="email-err"><%= err('email') %></div><% } %>
+              </div>
+              <div class="col-sm-5">
+                <label class="form-label" for="phone">Telefon <span class="text-muted-ink">(opcjonalnie)</span></label>
+                <input class="form-control<%= invalid('phone') %>" id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30" value="<%= val('phone') %>"<%- err('phone') ? ' aria-describedby="phone-err"' : '' %>>
+                <% if (err('phone')) { %><div class="invalid-feedback" id="phone-err"><%= err('phone') %></div><% } %>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">02 · <%= session ? 'Uczestnicy' : 'Szczegóły' %></legend>
+            <div class="mb-3">
+              <label class="form-label" for="participants">Liczba osób</label>
+              <input class="form-control qty-input<%= invalid('participants') %>" id="participants" name="participants" type="number" min="1" max="<%= maxParticipants %>" required value="<%= val('participants') %>"<%- err('participants') ? ' aria-describedby="participants-err"' : '' %>>
+              <% if (err('participants')) { %><div class="invalid-feedback" id="participants-err"><%= err('participants') %></div><% } %>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="message">Wiadomość<% if (session) { %> <span class="text-muted-ink">(opcjonalnie)</span><% } %></label>
+              <textarea class="form-control<%= invalid('message') %>" id="message" name="message" rows="5" maxlength="2000"<%- session ? '' : ' required' %><%- err('message') ? ' aria-describedby="message-err"' : '' %>><%= val('message') %></textarea>
+              <% if (err('message')) { %><div class="invalid-feedback" id="message-err"><%= err('message') %></div><% } %>
+              <% if (session) { %><div class="form-text"><%= f.typo('Np. imiona pozostałych osób, pytania, alergie (jeśli warsztaty obejmują poczęstunek).') %></div><% } %>
+            </div>
+          </fieldset>
+
+          <div class="hp" aria-hidden="true">
+            <label for="website">Strona www (zostaw puste)</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <p class="small text-muted-ink"><%= f.typo('Dane z formularza wykorzystam wyłącznie do obsługi zgłoszenia i kontaktu w sprawie warsztatów. Szczegóły:') %> <a href="/polityka-prywatnosci">polityka prywatności</a>.</p>
+          <button class="btn btn-ink" type="submit"><%= session ? 'Wyślij zgłoszenie' : 'Wyślij zapytanie' %><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></button>
+          <% if (contact.email) { %>
+          <p class="small mt-3 text-muted-ink">Wolisz zwykłego maila? <a href="mailto:<%= contact.email %>?subject=<%= encodeURIComponent(`Warsztaty: ${workshop.title}${session ? `, ${f.dateNum(session.starts_at)}` : ''}`) %>"><%= contact.email %></a></p>
+          <% } %>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

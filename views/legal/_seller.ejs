@@ -1,0 +1,6 @@
+<%# Dane sprzedawcy z .env; brakujące pola widoczne jako znacznik do uzupełnienia. %>
+<% const missing = (label) => `[uzupełnij: ${label}]`; %>
+<strong><%= seller.name || missing('nazwa sprzedawcy (SELLER_NAME)') %></strong>,
+<%= seller.address || missing('adres (SELLER_ADDRESS)') %>,
+NIP <%= seller.nip || missing('NIP (SELLER_NIP)') %><% if (seller.regon) { %>, REGON <%= seller.regon %><% } %>,
+e-mail: <% if (contact.email) { %><a href="mailto:<%= contact.email %>"><%= contact.email %></a><% } else { %><%= missing('e-mail (CONTACT_EMAIL)') %><% } %><% if (contact.phone) { %>, tel. <%= contact.phone %><% } %>

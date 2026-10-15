@@ -1,0 +1,9 @@
+<div class="admin-bar">
+  <div class="container">
+    <span>Zalogowano: <%= user.email %> (<%= role %>)</span>
+    <a href="/admin">Panel</a>
+    <form method="post" action="/logout">
+      <button type="submit">Wyloguj</button>
+    </form>
+  </div>
+</div>

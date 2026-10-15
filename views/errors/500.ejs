@@ -1,0 +1,11 @@
+<section class="sheet grid-paper rule-bottom">
+  <div class="container">
+    <p class="error-code">500</p>
+    <span class="label">Błąd serwera</span>
+    <h1 class="h-section"><%= f.typo('Coś się rozkleiło po naszej stronie. Spróbuj ponownie za chwilę.') %></h1>
+    <div class="actions mt-4">
+      <a class="btn btn-ink" href="/">Strona główna</a>
+      <% if (contact.email) { %><a class="btn btn-line" href="mailto:<%= contact.email %>">Napisz do mnie</a><% } %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,25 @@
+node_modules/
+
+# Konfiguracja z sekretami (OAuth, SMTP, SESSION_SECRET) - do repo trafia
+# wyłącznie .env.example.
+.env
+.env.*
+!.env.example
+
+# Baza SQLite (zamówienia, zgłoszenia na warsztaty, sesje) i jej pliki WAL -
+# żyje tylko lokalnie i na serwerze.
+data/
+
+# Logi pm2 (ecosystem.config.js)
+logs/
+*.log
+npm-debug.log*
+
+# Materiały źródłowe od klientki (zdjęcia w pełnej rozdzielczości, logo .ai,
+# BIO). Do repo trafiają tylko przetworzone pliki w public/images
+# (npm run images / npm run icons).
+input_data/
+
+.DS_Store
+.claude/worktrees/
+.claude/settings.local.json

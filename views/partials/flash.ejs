@@ -1,0 +1,7 @@
+<% if (flash) { %>
+<div class="container pt-4">
+  <div class="notice notice-<%= flash.type === 'success' ? 'ok' : 'warning' %>" role="status">
+    <p><%= flash.text %></p>
+  </div>
+</div>
+<% } %>

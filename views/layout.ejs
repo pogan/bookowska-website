@@ -1,0 +1,25 @@
+<!doctype html>
+<html class="no-js" lang="pl">
+
+<head>
+  <%- include('partials/head') %>
+</head>
+
+<body class="<%= bodyClass %>">
+  <a class="skip-link visually-hidden-focusable" href="#tresc">Przejdź do treści</a>
+  <% if (isAdmin) { %><%- include('partials/admin-bar') %><% } %>
+  <%- include('partials/header') %>
+  <% if (showTestBanner && testMode) { %><%- include('partials/test-banner') %><% } %>
+
+  <main id="tresc">
+    <%- include('partials/flash') %>
+    <%- body %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+  <script src="<%= asset('/vendor/bootstrap/bootstrap.bundle.min.js') %>" defer></script>
+  <script src="<%= asset('/js/main.js') %>" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<section class="page-head grid-paper rule-bottom">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>Warsztaty</nav>
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-8">
+        <span class="label">Warsztaty introligatorskie · <%= site.city %></span>
+        <h1 class="display"><%= f.typo('Zrób książkę własnymi rękami.') %></h1>
+        <p class="lead mb-0"><%= f.typo('Uczę w małych grupach — w pracowni w Sopocie i gościnnie. Nie potrzebujesz doświadczenia: narzędzia, materiały i herbatę zapewniam.') %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="kalendarz">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Kalendarz', aside: sessions.length ? `${sessions.length} ${f.plural(sessions.length, 'termin', 'terminy', 'terminów')}` : '' }) %>
+    <% if (sessions.length) { %>
+      <%- include('../partials/sessions', { sessions }) %>
+    <% } else { %>
+      <div class="box box-dashed">
+        <p class="mb-0"><%= f.typo('Nowe terminy pojawią się wkrótce. Chcesz, żebym dała Ci znać? Napisz — dopiszę Cię do listy.') %></p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="sheet" id="oferta">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '02', title: 'Warsztaty otwarte' }) %>
+    <% open.forEach((w, i) => { %>
+    <article class="workshop-row">
+      <div class="row g-4 g-lg-5">
+        <div class="col-md-5 col-lg-4">
+          <% if (w.image) { %>
+          <a href="/warsztaty/<%= w.slug %>" tabindex="-1" aria-hidden="true">
+            <%- include('../partials/photo', { key: w.image, sizes: '(min-width: 992px) 400px, (min-width: 768px) 40vw, 100vw', ratio: '4x5', hoverColor: true, fig: `0${i + 1}` }) %>
+          </a>
+          <% } %>
+        </div>
+        <div class="col-md-7 col-lg-7 offset-lg-1">
+          <h3><a class="text-decoration-none" href="/warsztaty/<%= w.slug %>"><%= w.title %></a></h3>
+          <p><%= f.typo(w.summary) %></p>
+          <dl class="spec">
+            <div><dt>Czas</dt><dd><%= f.duration(w.duration_minutes) || '—' %></dd></div>
+            <div><dt>Grupa</dt><dd>do <%= w.capacity %> osób</dd></div>
+            <div><dt>Poziom</dt><dd><%= w.level || '—' %></dd></div>
+            <div><dt>Cena</dt><dd><%= w.price ? f.money(w.price) : 'wycena' %></dd></div>
+          </dl>
+          <div class="actions mt-4">
+            <a class="btn btn-line" href="/warsztaty/<%= w.slug %>">Szczegóły i terminy</a>
+            <% const next = w.sessions.find((s) => s.canSignUp); %>
+            <% if (next) { %>
+              <a class="btn btn-ink" href="/warsztaty/<%= w.slug %>/zapis?termin=<%= next.id %>">Zapisz się na <%= f.dateNum(next.starts_at) %></a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </article>
+    <% }) %>
+  </div>
+</section>
+
+<section class="sheet" id="dla-grup">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '03', title: 'Dla grup i instytucji', aside: 'na zamówienie' }) %>
+    <div class="row g-5">
+      <% onRequest.forEach((w) => { %>
+      <div class="col-md-6">
+        <% if (w.image) { %>
+          <%- include('../partials/photo', { key: w.image, sizes: '(min-width: 768px) 50vw, 100vw', ratio: '3x2' }) %>
+        <% } %>
+        <h3 class="h4 mt-3"><%= w.title %></h3>
+        <p><%= f.typo(w.summary) %></p>
+        <div class="actions">
+          <a class="btn btn-ink" href="/warsztaty/<%= w.slug %>/zapis">Zapytaj o termin</a>
+          <a class="btn btn-line" href="/warsztaty/<%= w.slug %>">Więcej</a>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="zapisy">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '04', title: 'Jak wygląda zapis' }) %>
+    <ol class="steps">
+      <li>
+        <span class="step-no">01 / 03</span>
+        <h3 class="h5">Zgłoszenie</h3>
+        <p><%= f.typo('Wybierz termin i wypełnij krótki formularz. Miejsce jest od razu wstępnie zarezerwowane.') %></p>
+      </li>
+      <li>
+        <span class="step-no">02 / 03</span>
+        <h3 class="h5">Potwierdzenie</h3>
+        <p><%= f.typo('W ciągu dwóch dni roboczych odpiszę mailowo z potwierdzeniem i danymi do płatności.') %></p>
+      </li>
+      <li>
+        <span class="step-no">03 / 03</span>
+        <h3 class="h5">Warsztaty</h3>
+        <p><%= f.typo('Przychodzisz z dobrym humorem — resztę mam w pracowni. Wychodzisz z gotową rzeczą.') %></p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="photo-strip">
+      <%- include('../partials/photo', { key: 'warsztaty-praca', sizes: '(min-width: 992px) 400px, 100vw', ratio: '3x2' }) %>
+      <%- include('../partials/photo', { key: 'warsztaty-prasa', sizes: '(min-width: 992px) 400px, 100vw', ratio: '3x2' }) %>
+      <%- include('../partials/photo', { key: 'warsztaty-prelekcja', sizes: '(min-width: 992px) 400px, 100vw', ratio: '3x2' }) %>
+    </div>
+  </div>
+</section>

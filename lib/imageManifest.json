@@ -1,0 +1,281 @@
+{
+  "karina-portret": {
+    "w": 1869,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Karina Lewandowska pochylona nad pracą",
+    "og": "/images/photos/karina-portret-og.jpg"
+  },
+  "karina-profil": {
+    "w": 1869,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Karina Lewandowska z profilu"
+  },
+  "karina-ramka": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Karina zasłania twarz oprawioną grafiką z pracy dyplomowej",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "nozyczki": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Dłonie przycinające arkusz papieru nożycami introligatorskimi"
+  },
+  "notesy-marmurkowe": {
+    "w": 2048,
+    "h": 1363,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Trzy notesy w oprawie półpłóciennej z papierem marmurkowym na stole w pracowni",
+    "og": "/images/photos/notesy-marmurkowe-og.jpg"
+  },
+  "notes-granat": {
+    "w": 640,
+    "h": 800,
+    "widths": [
+      480,
+      640
+    ],
+    "alt": "Notes z czerwonym płóciennym grzbietem i granatowo-czerwonym papierem marmurkowym",
+    "og": "/images/photos/notes-granat-og.jpg"
+  },
+  "notes-zolty": {
+    "w": 720,
+    "h": 900,
+    "widths": [
+      480,
+      720
+    ],
+    "alt": "Notes z żółtym płóciennym grzbietem i szaro-żółtym papierem marmurkowym",
+    "og": "/images/photos/notes-zolty-og.jpg"
+  },
+  "notes-bordo": {
+    "w": 740,
+    "h": 925,
+    "widths": [
+      480,
+      740
+    ],
+    "alt": "Notes z bordowym płóciennym grzbietem i różowo-szarym papierem marmurkowym",
+    "og": "/images/photos/notes-bordo-og.jpg"
+  },
+  "dyplom-ciecia": {
+    "w": 3452,
+    "h": 2301,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Ażurowe karty książki dyplomowej rzucające cień",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-harmonijka": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Rozłożona harmonijkowo książka z wycinanymi kartami",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-lektura": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Dłoń trzymająca otwartą książkę z wycinanymi kartami",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-ekspozycja": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Książka dyplomowa na stole wystawowym",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-stojak": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Książka-obiekt rozpięta na metalowym stojaku",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-pudlo": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Dłonie przeglądające karty w czarnym pudle",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-stol": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Obiekty z cyklu dyplomowego rozłożone na stole",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-faktura": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Oprawiona faktura obok ażurowej książki",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-rekawiczka": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Biała rękawiczka archiwisty obok obiektu",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "dyplom-zbrojownia": {
+    "w": 3504,
+    "h": 2336,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Ekspozycja książki dyplomowej w Wielkiej Zbrojowni w Gdańsku",
+    "credit": "fot. Paweł Lęcki"
+  },
+  "warsztaty-pomiar": {
+    "w": 2048,
+    "h": 1364,
+    "widths": [
+      480,
+      960,
+      1600
+    ],
+    "alt": "Uczestniczka warsztatów mierzy grzbiet szytego bloku",
+    "og": "/images/photos/warsztaty-pomiar-og.jpg"
+  },
+  "warsztaty-szycie": {
+    "w": 1364,
+    "h": 2048,
+    "widths": [
+      480,
+      960,
+      1364
+    ],
+    "alt": "Dłonie z linijką przy bloku książki w prasie"
+  },
+  "warsztaty-klejenie": {
+    "w": 1364,
+    "h": 2048,
+    "widths": [
+      480,
+      960,
+      1364
+    ],
+    "alt": "Uczestniczka smaruje klejem grzbiet bloku w drewnianej prasie"
+  },
+  "warsztaty-prasa-stol": {
+    "w": 1364,
+    "h": 2048,
+    "widths": [
+      480,
+      960,
+      1364
+    ],
+    "alt": "Drewniana prasa introligatorska z blokiem na stole warsztatowym"
+  },
+  "warsztaty-prasa": {
+    "w": 720,
+    "h": 478,
+    "widths": [
+      480,
+      720
+    ],
+    "alt": "Dłoń dokręcająca śrubę prasy introligatorskiej"
+  },
+  "warsztaty-prelekcja": {
+    "w": 720,
+    "h": 478,
+    "widths": [
+      480,
+      720
+    ],
+    "alt": "Karina prowadzi prelekcję o historii książki"
+  },
+  "warsztaty-sala": {
+    "w": 720,
+    "h": 478,
+    "widths": [
+      480,
+      720
+    ],
+    "alt": "Uczestnicy warsztatów przy wspólnym stole, slajd o książce w Chinach, Japonii i Indiach"
+  },
+  "warsztaty-praca": {
+    "w": 720,
+    "h": 478,
+    "widths": [
+      480,
+      720
+    ],
+    "alt": "Karina składa okładkę na macie do cięcia"
+  },
+  "warsztaty-wspolnie": {
+    "w": 798,
+    "h": 1200,
+    "widths": [
+      480,
+      798
+    ],
+    "alt": "Dwie osoby wspólnie oprawiają książkę"
+  }
+}

@@ -1,0 +1,96 @@
+<section class="hero grid-paper">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6">
+        <span class="label">Pracownia introligatorska · <%= site.city %> · od <%= site.since %></span>
+        <h1 class="display"><%= f.typo('Oprawiam książki, szyję notesy i uczę introligatorstwa.') %></h1>
+        <p class="lead"><%= f.typo('Tu Kara, czyli Bookowska — oprawca, czyli introligatorka. Lubię książki i papier, więc chyba całkiem nieźle trafiłam z wyborem ścieżki zawodowej.') %></p>
+        <div class="actions">
+          <a class="btn btn-ink" href="/warsztaty">Warsztaty<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
+          <a class="btn btn-line" href="/sklep">Sklep</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <%- include('../partials/photo', { key: 'dyplom-harmonijka', sizes: '(min-width: 1400px) 600px, (min-width: 992px) 46vw, 100vw', fig: '01', caption: 'Książka-obiekt z cyklu dyplomowego, 2018', priority: true }) %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="pracownia">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Pracownia', aside: site.city }) %>
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4">
+        <%- include('../partials/photo', { key: 'karina-portret', sizes: '(min-width: 992px) 400px, (min-width: 768px) 40vw, 100vw', ratio: '4x5', fig: '02', caption: site.owner }) %>
+      </div>
+      <div class="col-md-7 col-lg-7 offset-lg-1">
+        <h2 class="h-section"><%= f.typo('Małą pracownię prowadzę w Sopocie — można tu wpaść na herbatę i obgadać pomysł.') %></h2>
+        <p><%= f.typo('Oficjalnie introligatorstwem zajmuję się od 2016 roku, kiedy zdobyłam tytuł zawodowy w tej dziedzinie. Od tego czasu złożyłam setki książek, przeprowadziłam dziesiątki warsztatów, prelekcji i pokazów — i ciągle mi mało.') %></p>
+        <p><%= f.typo('Najbardziej lubię nietypowe projekty. Z chęcią pomogę Ci przenieść Twoją wizję z komputera do świata materialnego.') %></p>
+        <a class="link-arrow" href="/o-mnie">Więcej o mnie<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
+        <dl class="spec">
+          <div><dt>W zawodzie od</dt><dd><%= site.since %></dd></div>
+          <div><dt>Oprawione książki</dt><dd>setki</dd></div>
+          <div><dt>Warsztaty i prelekcje</dt><dd>dziesiątki</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="warsztaty">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '02', title: 'Warsztaty', aside: 'Najbliższe terminy' }) %>
+    <div class="row g-4 mb-4 align-items-end">
+      <div class="col-lg-7">
+        <h2 class="h-section mb-0"><%= f.typo('Uczę w małych grupach. Wychodzisz z rzeczą zrobioną własnymi rękami.') %></h2>
+      </div>
+      <div class="col-lg-5 text-lg-end">
+        <a class="link-arrow" href="/warsztaty">Wszystkie warsztaty<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
+      </div>
+    </div>
+    <% if (sessions.length) { %>
+      <%- include('../partials/sessions', { sessions }) %>
+    <% } else { %>
+      <div class="box box-dashed">
+        <p class="mb-2"><%= f.typo('Kalendarz na najbliższe tygodnie jest jeszcze pusty — nowe terminy pojawią się wkrótce.') %></p>
+        <a class="link-arrow" href="/warsztaty">Zobacz ofertę warsztatów</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="sheet" id="sklep">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '03', title: 'Sklep', aside: 'Szyte ręcznie' }) %>
+    <div class="row g-4 mb-4 align-items-end">
+      <div class="col-lg-7">
+        <h2 class="h-section mb-0"><%= f.typo('Notesy z pracowni — każdy egzemplarz szyty ręcznie.') %></h2>
+      </div>
+      <div class="col-lg-5 text-lg-end">
+        <a class="link-arrow" href="/sklep">Cały sklep<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a>
+      </div>
+    </div>
+    <div class="products">
+      <% products.forEach((product) => { %><%- include('../partials/product-card', { product }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="realizacje">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '04', title: 'Realizacje', aside: '2018' }) %>
+    <div class="row g-4 mb-4">
+      <div class="col-lg-7">
+        <h2 class="h-section"><%= f.typo('Książki dyplomowe — wystawa „Najlepsze dyplomy 2018”, Wielka Zbrojownia w Gdańsku.') %></h2>
+      </div>
+    </div>
+    <div class="photo-strip">
+      <%- include('../partials/photo', { key: 'dyplom-ciecia', sizes: '(min-width: 992px) 400px, 100vw', ratio: '4x5', fig: '03' }) %>
+      <%- include('../partials/photo', { key: 'dyplom-lektura', sizes: '(min-width: 992px) 400px, 100vw', ratio: '4x5', fig: '04' }) %>
+      <%- include('../partials/photo', { key: 'dyplom-stojak', sizes: '(min-width: 992px) 400px, 100vw', ratio: '4x5', fig: '05' }) %>
+    </div>
+    <p class="mt-4"><a class="link-arrow" href="/o-mnie#dyplom">Zobacz cały cykl<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-right"></use></svg></a></p>
+  </div>
+</section>

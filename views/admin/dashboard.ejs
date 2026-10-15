@@ -1,0 +1,90 @@
+<%
+  const signupStatus = { new: 'nowe', confirmed: 'potwierdzone', cancelled: 'wycofane' };
+%>
+<section class="page-head">
+  <div class="container">
+    <span class="label">Panel pracowni · podgląd</span>
+    <h1 class="display">Zgłoszenia i zamówienia</h1>
+    <p class="text-muted-ink"><%= f.typo('Na tym etapie panel pokazuje dane tylko do odczytu. Zgłoszenia potwierdzasz mailowo — każde przyszło też na skrzynkę pracowni.') %></p>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="stat-row">
+      <div><span class="label mb-1">Nowe zgłoszenia</span><span class="stat-value"><%= stats.newSignups %></span></div>
+      <div><span class="label mb-1">Najbliższe terminy</span><span class="stat-value"><%= sessions.length %></span></div>
+      <div><span class="label mb-1">Opłacone zamówienia</span><span class="stat-value"><%= stats.paidOrders %></span></div>
+      <div><span class="label mb-1">Wartość opłaconych</span><span class="stat-value"><%= f.money(stats.paidTotal) %></span></div>
+    </div>
+
+    <%- include('../partials/sheet-head', { no: '01', title: 'Terminy warsztatów', aside: 'obłożenie' }) %>
+    <% if (sessions.length) { %>
+    <div class="table-responsive mb-5">
+      <table class="table">
+        <thead><tr><th>Termin</th><th>Warsztaty</th><th>Miejsce</th><th>Zajęte</th><th>Status</th></tr></thead>
+        <tbody>
+          <% sessions.forEach((s) => { %>
+          <tr>
+            <td class="mono"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></td>
+            <td><%= s.workshop_title %></td>
+            <td><%= s.location %></td>
+            <td class="mono"><%= s.taken %> / <%= s.seats %></td>
+            <td><%= s.isCancelled ? 'odwołany' : s.isFull ? 'pełny' : 'zapisy otwarte' %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %>
+      <p class="mb-5 text-muted-ink">Brak zaplanowanych terminów (db/seed/workshops.json).</p>
+    <% } %>
+
+    <%- include('../partials/sheet-head', { no: '02', title: 'Zgłoszenia', aside: `${signups.length}` }) %>
+    <% if (signups.length) { %>
+    <div class="table-responsive mb-5">
+      <table class="table">
+        <thead><tr><th>Wpłynęło</th><th>Warsztaty / termin</th><th>Osoba</th><th>Kontakt</th><th>Os.</th><th>Wiadomość</th><th>Status</th></tr></thead>
+        <tbody>
+          <% signups.forEach((g) => { %>
+          <tr>
+            <td class="mono small"><%= f.dateTime(g.created_at) %></td>
+            <td><%= g.workshop_title || '—' %><br><span class="mono small text-muted-ink"><%= g.starts_at ? `${f.dateNum(g.starts_at)} ${f.time(g.starts_at)}` : 'zapytanie' %></span></td>
+            <td><%= g.name %></td>
+            <td><a href="mailto:<%= g.email %>"><%= g.email %></a><% if (g.phone) { %><br><span class="small"><%= g.phone %></span><% } %></td>
+            <td class="mono"><%= g.participants %></td>
+            <td class="cell-message small"><%= g.message || '—' %></td>
+            <td class="small"><%= signupStatus[g.status] || g.status %><% if (!g.studio_notified_at) { %><br><span class="text-muted-ink">bez e-maila</span><% } %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %>
+      <p class="mb-5 text-muted-ink">Jeszcze nikt się nie zgłosił.</p>
+    <% } %>
+
+    <%- include('../partials/sheet-head', { no: '03', title: 'Zamówienia', aside: `${orders.length}` }) %>
+    <% if (orders.length) { %>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Numer</th><th>Złożone</th><th>Klient</th><th>Szt.</th><th>Kwota</th><th>Status</th></tr></thead>
+        <tbody>
+          <% orders.forEach((o) => { %>
+          <tr>
+            <td class="mono"><a href="/admin/zamowienia/<%= o.number %>"><%= o.number %></a><% if (o.payment_provider === 'mock') { %><br><span class="small text-muted-ink">test</span><% } %></td>
+            <td class="mono small"><%= f.dateTime(o.created_at) %></td>
+            <td><%= o.customer_name %><br><a class="small" href="mailto:<%= o.email %>"><%= o.email %></a></td>
+            <td class="mono"><%= o.item_count %></td>
+            <td class="mono"><%= f.money(o.total) %></td>
+            <td class="small"><%= statusLabels[o.status] || o.status %><% if (o.stock_conflict) { %><br><strong>brak towaru — wyjaśnij</strong><% } %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <% } else { %>
+      <p class="text-muted-ink">Brak zamówień.</p>
+    <% } %>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+<%
+  const bad = ['failed', 'cancelled', 'expired'].includes(order.status);
+%>
+<section class="page-head grid-paper rule-bottom">
+  <div class="container">
+    <span class="label">Krok 3 z 3 · zamówienie <%= order.number %></span>
+    <span class="status-stamp<%= bad ? ' is-bad' : '' %>"><%= order.statusLabel %></span>
+    <% if (order.status === 'paid') { %>
+      <h1 class="display"><%= f.typo('Dziękuję za zamówienie!') %></h1>
+      <p class="lead"><%= f.typo(mailerConfigured
+        ? `Potwierdzenie wysłałam na adres ${order.email}. Paczkę nadam w ciągu 5 dni roboczych.`
+        : 'Paczkę nadam w ciągu 5 dni roboczych. Zachowaj numer zamówienia — przyda się w razie pytań.') %></p>
+      <% if (order.payment_provider === 'mock') { %>
+        <p class="small text-muted-ink"><%= f.typo('Tryb testowy: płatność była symulowana i to zamówienie nie zostanie zrealizowane.') %></p>
+      <% } %>
+    <% } else if (order.status === 'pending') { %>
+      <h1 class="display"><%= f.typo('Czekam na potwierdzenie płatności.') %></h1>
+      <p class="lead"><%= f.typo('Jeśli płatność nie została dokończona, możesz do niej wrócić.') %></p>
+      <% if (paymentUrl) { %><a class="btn btn-ink" href="<%= paymentUrl %>">Przejdź do płatności</a><% } %>
+    <% } else { %>
+      <h1 class="display"><%= f.typo('Płatność nie doszła do skutku.') %></h1>
+      <p class="lead"><%= f.typo('Zamówienie zostało anulowane, a produkty wróciły do sklepu. Twój koszyk czeka — możesz spróbować ponownie.') %></p>
+      <a class="btn btn-ink" href="/koszyk">Wróć do koszyka</a>
+    <% } %>
+  </div>
+</section>
+
+<section class="sheet">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Szczegóły', aside: order.number }) %>
+    <div class="row g-5">
+      <div class="col-lg-7">
+        <ul class="ship-list">
+          <% order.items.forEach((i) => { %>
+          <li><span><%= i.quantity %> × <%= i.name %></span><span class="mono"><%= f.money(i.unit_price * i.quantity) %></span></li>
+          <% }) %>
+        </ul>
+        <dl class="totals mt-3">
+          <div><dt>Produkty</dt><dd><%= f.money(order.subtotal) %></dd></div>
+          <div><dt>Dostawa: <%= method ? method.label : order.shipping_method %></dt><dd><%= f.money(order.shipping_cost) %></dd></div>
+          <div class="grand"><dt>Razem</dt><dd><%= f.money(order.total) %></dd></div>
+        </dl>
+      </div>
+      <div class="col-lg-4 offset-lg-1">
+        <table class="spec-table">
+          <tbody>
+            <tr><th scope="row">Zamawiający</th><td><%= order.customer_name %></td></tr>
+            <tr><th scope="row">E-mail</th><td><%= order.email %></td></tr>
+            <% if (order.phone) { %><tr><th scope="row">Telefon</th><td><%= order.phone %></td></tr><% } %>
+            <% if (order.parcel_locker) { %><tr><th scope="row">Paczkomat</th><td class="mono"><%= order.parcel_locker %></td></tr><% } %>
+            <% if (order.address) { %><tr><th scope="row">Adres</th><td><%= order.address.street %><br><%= order.address.postcode %> <%= order.address.city %></td></tr><% } %>
+            <% if (order.notes) { %><tr><th scope="row">Uwagi</th><td><%= order.notes %></td></tr><% } %>
+          </tbody>
+        </table>
+        <p class="small text-muted-ink"><%= f.typo('Pytania o zamówienie? Odpowiedz na e-mail z potwierdzeniem albo napisz') %><% if (contact.email) { %>: <a href="mailto:<%= contact.email %>?subject=<%= encodeURIComponent(`Zamówienie ${order.number}`) %>"><%= contact.email %></a><% } %>.</p>
+      </div>
+    </div>
+  </div>
+</section>

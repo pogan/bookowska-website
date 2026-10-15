@@ -1,0 +1,29 @@
+<%# Kalendarz terminów. Parametry: sessions, showTitle (domyślnie true). %>
+<% const withTitle = typeof showTitle === 'undefined' ? true : showTitle; %>
+<ol class="sessions">
+  <% sessions.forEach((s) => { %>
+  <li class="session<%= s.isFull ? ' is-full' : '' %>">
+    <div class="session-date">
+      <time datetime="<%= s.starts_at %>"><%= f.dateNum(s.starts_at) %></time><span class="session-dow"><%= f.weekdayShort(s.starts_at) %></span><br>
+      <span class="text-muted-ink"><%= f.time(s.starts_at) %>–<%= f.time(s.ends_at) %></span>
+    </div>
+    <div class="session-title">
+      <% if (withTitle) { %><a href="/warsztaty/<%= s.workshop_slug %>"><%= s.workshop_title %></a><% } %>
+      <span class="session-place"><%= s.location %></span>
+      <% if (s.note) { %><span class="session-note"><%= s.note %></span><% } %>
+    </div>
+    <div class="session-seats">
+      <span class="gauge" aria-hidden="true"><% for (let i = 0; i < s.seats && i < 12; i++) { %><i class="<%= i < s.taken ? 'on' : '' %>"></i><% } %></span>
+      <% if (s.isCancelled) { %>odwołane<% } else if (s.isFull) { %>brak miejsc<% } else { %><%= s.seatsLeft %> <%= f.plural(s.seatsLeft, 'wolne miejsce', 'wolne miejsca', 'wolnych miejsc') %><% } %>
+    </div>
+    <div class="session-price"><%= s.price ? f.money(s.price) : '' %></div>
+    <div class="session-action">
+      <% if (s.canSignUp) { %>
+        <a class="btn btn-line btn-sm" href="/warsztaty/<%= s.workshop_slug %>/zapis?termin=<%= s.id %>">Zapisz się</a>
+      <% } else if (s.isFull) { %>
+        <a class="btn-text" href="/warsztaty/<%= s.workshop_slug %>/zapis?termin=<%= s.id %>">Lista rezerwowa</a>
+      <% } %>
+    </div>
+  </li>
+  <% }) %>
+</ol>

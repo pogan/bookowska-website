@@ -1,0 +1,39 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>Sklep</nav>
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-8">
+        <span class="label">Sklep · szyte ręcznie w <%= site.city %></span>
+        <h1 class="display"><%= f.typo('Notesy z pracowni.') %></h1>
+        <p class="lead mb-0"><%= f.typo('Każdy blok szyję ręcznie, okładki oprawiam w płótno i papier marmurkowy. Wiele egzemplarzy powstaje tylko raz.') %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Katalog', aside: `${products.length} ${f.plural(products.length, 'pozycja', 'pozycje', 'pozycji')}` }) %>
+    <div class="products">
+      <% products.forEach((product) => { %><%- include('../partials/product-card', { product }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="dostawa">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '02', title: 'Dostawa i zwroty' }) %>
+    <div class="row g-5">
+      <div class="col-lg-6">
+        <ul class="ship-list">
+          <% shippingMethods.forEach((m) => { %>
+          <li><span><%= m.label %> <span class="choice-detail"><%= m.detail %></span></span><span class="mono"><%= f.money(m.price) %></span></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div class="col-lg-5 offset-lg-1">
+        <p><%= f.typo('Zamówienia wysyłam w ciągu 5 dni roboczych. Na zwrot masz 14 dni od otrzymania paczki — szczegóły w') %> <a href="/regulamin">regulaminie</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>

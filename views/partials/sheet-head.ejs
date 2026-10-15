@@ -1,0 +1,7 @@
+<%# Nagłówek sekcji jak oznaczenie arkusza: numer, nazwa, linia, dopisek. %>
+<div class="sheet-head">
+  <span class="sheet-no"><%= no %></span>
+  <span class="sheet-title"><%= title %></span>
+  <span class="sheet-rule" aria-hidden="true"></span>
+  <% if (typeof aside !== 'undefined' && aside) { %><span class="sheet-aside"><%= aside %></span><% } %>
+</div>

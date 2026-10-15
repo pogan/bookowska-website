@@ -1,0 +1,39 @@
+<%
+  const navItems = [
+    { href: '/warsztaty', label: 'Warsztaty' },
+    { href: '/sklep', label: 'Sklep' },
+    { href: '/o-mnie', label: 'O mnie' },
+    { href: '/kontakt', label: 'Kontakt' },
+  ];
+  const isActive = (href) => currentPath === href || currentPath.startsWith(href + '/');
+%>
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg" aria-label="Menu główne">
+    <div class="container">
+      <a class="brand" href="/" aria-label="<%= site.name %> — strona główna">
+        <img class="brand-mark" src="/images/logo-mark.svg" alt="" width="18" height="38">
+        <img class="brand-word" src="/images/logo-wordmark.svg" alt="" width="95" height="15">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+              aria-controls="menu" aria-expanded="false">Menu</button>
+
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <% navItems.forEach((item, i) => { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%= item.href %>"<%- isActive(item.href) ? ' aria-current="page"' : '' %>>
+              <span class="nav-no">0<%= i + 1 %></span><%= item.label %>
+            </a>
+          </li>
+          <% }) %>
+          <li class="nav-item">
+            <a class="nav-link" href="/koszyk"<%- currentPath === '/koszyk' ? ' aria-current="page"' : '' %>>
+              Koszyk <span class="cart-count" aria-label="liczba produktów: <%= cartCount %>">[<%= cartCount %>]</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

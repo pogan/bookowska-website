@@ -1,0 +1,18 @@
+<section class="sheet grid-paper rule-bottom">
+  <div class="container">
+    <div class="gateway">
+      <span class="label">Panel pracowni</span>
+      <h1 class="h-section">Logowanie</h1>
+      <% if (typeof loginError !== 'undefined' && loginError) { %>
+        <div class="notice notice-error" role="alert"><p><%= loginError %></p></div>
+      <% } %>
+      <% if (typeof notice !== 'undefined' && notice) { %>
+        <div class="notice notice-warning" role="status"><p><%= notice %></p></div>
+      <% } %>
+      <p class="small text-muted-ink"><%= f.typo('Dostęp mają wyłącznie konta Google administratorów pracowni.') %></p>
+      <% if (typeof googleConfigured === 'undefined' || googleConfigured) { %>
+        <a class="btn btn-ink w-100 mt-2" href="/auth/google"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-google"></use></svg>Zaloguj przez Google</a>
+      <% } %>
+    </div>
+  </div>
+</section>

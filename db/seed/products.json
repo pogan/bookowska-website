@@ -1,0 +1,69 @@
+{
+  "_note": "PRZYKŁADOWE DANE do podmiany na prawdziwą ofertę pracowni. Ceny w groszach brutto; stock: null = bez limitu, liczba = sztuki (ustawiane tylko przy pierwszym imporcie, chyba że npm run seed -- --reset-stock). images: klucze z lib/imageManifest.json (scripts/images.config.js). Po edycji: npm run seed.",
+  "products": [
+    {
+      "slug": "notes-marmurkowy-granat-i-czerwien",
+      "name": "Notes marmurkowy — granat i czerwień",
+      "summary": "Notes A5 w oprawie półpłóciennej: czerwone płótno na grzbiecie i ręcznie marmurkowany papier na okładkach.",
+      "description": "Każdy arkusz papieru marmurkowego jest jedyny w swoim rodzaju, więc i ten notes nie ma bliźniaka. Blok szyję ręcznie z kremowego papieru, który dobrze znosi pióro i ołówek, a płócienny grzbiet pozwala otworzyć notes płasko.\n\nDobry na zapiski, szkice i listy — albo na prezent dla kogoś, kto lubi papier tak jak ja.",
+      "price": 12900,
+      "stock": 1,
+      "width_mm": 148,
+      "height_mm": 210,
+      "depth_mm": 14,
+      "sheets": 96,
+      "binding": "półpłócienna, blok szyty ręcznie",
+      "paper": "kremowy offset 120 g/m²",
+      "images": ["notes-granat", "notesy-marmurkowe"],
+      "sort": 10
+    },
+    {
+      "slug": "notes-marmurkowy-zolc-i-grafit",
+      "name": "Notes marmurkowy — żółć i grafit",
+      "summary": "Notes A5 z żółtym płóciennym grzbietem i szaro-złotym papierem marmurkowym.",
+      "description": "Żółte płótno i papier marmurkowy w odcieniach grafitu i złota. Blok szyty ręcznie z kremowego papieru, okładki z twardej tektury introligatorskiej.\n\nEgzemplarz jedyny — wzór marmurku się nie powtórzy.",
+      "price": 12900,
+      "stock": 1,
+      "width_mm": 148,
+      "height_mm": 210,
+      "depth_mm": 14,
+      "sheets": 96,
+      "binding": "półpłócienna, blok szyty ręcznie",
+      "paper": "kremowy offset 120 g/m²",
+      "images": ["notes-zolty", "notesy-marmurkowe"],
+      "sort": 20
+    },
+    {
+      "slug": "notes-marmurkowy-bordo-i-roz",
+      "name": "Notes marmurkowy — bordo i róż",
+      "summary": "Notes A5 z bordowym płóciennym grzbietem i różowo-szarym papierem marmurkowym.",
+      "description": "Bordowe płótno i spokojny, płynący marmurek w różach i szarościach. Blok szyty ręcznie z kremowego papieru, okładki z twardej tektury introligatorskiej.\n\nEgzemplarz jedyny — wzór marmurku się nie powtórzy.",
+      "price": 12900,
+      "stock": 1,
+      "width_mm": 148,
+      "height_mm": 210,
+      "depth_mm": 14,
+      "sheets": 96,
+      "binding": "półpłócienna, blok szyty ręcznie",
+      "paper": "kremowy offset 120 g/m²",
+      "images": ["notes-bordo", "notesy-marmurkowe"],
+      "sort": 30
+    },
+    {
+      "slug": "bon-podarunkowy-na-warsztaty",
+      "name": "Bon podarunkowy na warsztaty",
+      "summary": "Bon na udział w dowolnych warsztatach otwartych, ważny 12 miesięcy. Drukowany na kartonie, w kopercie.",
+      "description": "Prezent dla kogoś, kto lubi robić rzeczy własnymi rękami. Osoba obdarowana sama wybiera warsztaty i termin z kalendarza — wystarczy, że przy zapisie poda numer bonu.\n\nBon wysyłam pocztą albo przekazuję w pracowni. Jeśli wybrane warsztaty są droższe, różnicę można dopłacić.",
+      "price": 22000,
+      "stock": null,
+      "width_mm": 210,
+      "height_mm": 99,
+      "depth_mm": null,
+      "sheets": null,
+      "binding": null,
+      "paper": "karton 300 g/m², koperta",
+      "images": ["warsztaty-pomiar"],
+      "sort": 40
+    }
+  ]
+}

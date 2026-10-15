@@ -1,0 +1,50 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>Kontakt</nav>
+    <span class="label">Pracownia · <%= site.city %></span>
+    <h1 class="display"><%= f.typo('Napisz, zadzwoń albo wpadnij do pracowni.') %></h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6">
+        <dl class="spec mt-0">
+          <div>
+            <dt>E-mail</dt>
+            <dd><% if (contact.email) { %><a href="mailto:<%= contact.email %>"><%= contact.email %></a><% } else { %>—<% } %></dd>
+          </div>
+          <% if (contact.phone) { %>
+          <div>
+            <dt>Telefon</dt>
+            <dd><a href="tel:<%= contact.phone.replace(/[^\d+]/g, '') %>"><%= contact.phone %></a></dd>
+          </div>
+          <% } %>
+          <div>
+            <dt>Pracownia</dt>
+            <dd><%= contact.studioAddress || site.city %><br><span class="text-muted-ink">wizyty po wcześniejszym umówieniu</span></dd>
+          </div>
+          <% site.social.forEach((s) => { %>
+          <div>
+            <dt><%= s.label %></dt>
+            <dd><a href="<%= s.url %>" rel="noopener" target="_blank"><%= s.handle %></a></dd>
+          </div>
+          <% }) %>
+        </dl>
+      </div>
+      <div class="col-lg-5 offset-lg-1">
+        <div class="box">
+          <span class="label">W czym mogę pomóc</span>
+          <ul class="ship-list">
+            <li><span>Zapis na warsztaty</span><a class="mono" href="/warsztaty">kalendarz →</a></li>
+            <li><span>Warsztaty dla grup i firm</span><a class="mono" href="/warsztaty/warsztaty-dla-grup">zapytanie →</a></li>
+            <li><span>Prelekcje i pokazy</span><a class="mono" href="/warsztaty/prelekcje-i-pokazy">zapytanie →</a></li>
+            <li><span>Oprawa na zamówienie</span><a class="mono" href="/o-mnie#na-zamowienie">więcej →</a></li>
+            <li><span>Sklep i zamówienia</span><a class="mono" href="/sklep">sklep →</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

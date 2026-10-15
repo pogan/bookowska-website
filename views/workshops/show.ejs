@@ -1,0 +1,73 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span><a href="/warsztaty">Warsztaty</a><span aria-hidden="true">/</span><%= workshop.title %></nav>
+    <span class="label"><%= workshop.isRequest ? 'Na zamówienie' : 'Warsztaty otwarte' %></span>
+    <h1 class="display"><%= f.typo(workshop.title) %></h1>
+    <p class="lead"><%= f.typo(workshop.summary) %></p>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-6 col-lg-5">
+        <% if (workshop.image) { %>
+          <%- include('../partials/photo', { key: workshop.image, sizes: '(min-width: 992px) 500px, (min-width: 768px) 50vw, 100vw', ratio: '4x5', fig: '01', priority: true }) %>
+        <% } %>
+      </div>
+      <div class="col-md-6 col-lg-6 offset-lg-1">
+        <table class="spec-table">
+          <tbody>
+            <tr><th scope="row">Czas trwania</th><td><%= f.duration(workshop.duration_minutes) || 'do ustalenia' %></td></tr>
+            <tr><th scope="row">Grupa</th><td>do <%= workshop.capacity %> osób</td></tr>
+            <tr><th scope="row">Poziom</th><td><%= workshop.level || '—' %></td></tr>
+            <tr><th scope="row">Cena</th><td><%= workshop.price ? `${f.money(workshop.price)} od osoby` : 'wycena indywidualna' %></td></tr>
+            <% if (workshop.includes) { %><tr><th scope="row">W cenie</th><td><%= workshop.includes %></td></tr><% } %>
+            <% if (workshop.takeaway) { %><tr><th scope="row">Wychodzisz z</th><td><%= workshop.takeaway %></td></tr><% } %>
+          </tbody>
+        </table>
+        <div class="prose">
+          <% f.paragraphs(workshop.description).forEach((p) => { %><p><%= f.typo(p) %></p><% }) %>
+        </div>
+        <% if (workshop.isRequest) { %>
+          <div class="actions mt-4">
+            <a class="btn btn-ink" href="/warsztaty/<%= workshop.slug %>/zapis">Zapytaj o termin</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (workshop.program.length) { %>
+<section class="sheet" id="program">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Program' }) %>
+    <div class="row">
+      <div class="col-lg-8">
+        <ol class="program">
+          <% workshop.program.forEach((item, i) => { %>
+          <li><span class="program-no"><%= String(i + 1).padStart(2, '0') %></span><span><%= f.typo(item) %></span></li>
+          <% }) %>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<% if (!workshop.isRequest) { %>
+<section class="sheet" id="terminy">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: workshop.program.length ? '02' : '01', title: 'Terminy' }) %>
+    <% if (workshop.sessions.length) { %>
+      <%- include('../partials/sessions', { sessions: workshop.sessions, showTitle: false }) %>
+    <% } else { %>
+      <div class="box box-dashed">
+        <p><%= f.typo('Na razie nie ma zaplanowanych terminów tych warsztatów.') %></p>
+        <a class="btn btn-line" href="/warsztaty/<%= workshop.slug %>/zapis">Zapytaj o kolejny termin</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+<% } %>

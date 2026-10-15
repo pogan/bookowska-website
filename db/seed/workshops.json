@@ -1,0 +1,112 @@
+{
+  "_note": "PRZYKŁADOWE DANE do podmiany na prawdziwą ofertę pracowni. Ceny w groszach brutto od osoby, terminy w czasie warszawskim (YYYY-MM-DD HH:MM). Po edycji: npm run seed.",
+  "workshops": [
+    {
+      "slug": "notes-w-twardej-oprawie",
+      "title": "Notes w twardej oprawie",
+      "kind": "open",
+      "summary": "Od pojedynczej składki do gotowego notesu: szycie bloku, okładka z tektury i płótna, klejenie i prasowanie.",
+      "description": "Najlepszy początek przygody z introligatorstwem. Poznasz papier, kierunek włókien i narzędzia, a potem krok po kroku zszyjesz blok z kilku składek i oprawisz go w twardą okładkę.\n\nNie potrzebujesz żadnego doświadczenia — wystarczą chęci i cierpliwość. Pracujemy w małej grupie, więc każdemu mogę zajrzeć przez ramię.",
+      "program": [
+        "papier, kierunek włókien, bigowanie i składanie składek",
+        "szycie bloku na taśmy",
+        "przygotowanie okładki z tektury i płótna",
+        "wklejenie bloku, wyklejki i prasowanie"
+      ],
+      "duration_minutes": 240,
+      "price": 22000,
+      "capacity": 8,
+      "level": "dla początkujących",
+      "includes": "materiały, narzędzia, herbata i coś słodkiego",
+      "takeaway": "notes A5 w twardej oprawie, uszyty własnoręcznie",
+      "image": "warsztaty-klejenie",
+      "sort": 10,
+      "sessions": [
+        { "start": "2026-11-07 10:00", "end": "2026-11-07 14:00", "location": "Pracownia Bookowska, Sopot" },
+        { "start": "2026-12-05 10:00", "end": "2026-12-05 14:00", "location": "Pracownia Bookowska, Sopot", "note": "edycja przedświąteczna" }
+      ]
+    },
+    {
+      "slug": "oprawa-japonska",
+      "title": "Oprawa japońska",
+      "kind": "open",
+      "summary": "Szycie widoczne na grzbiecie, bez kleju i bez prasy — najprostszy sposób na własny zeszyt.",
+      "description": "Oprawa japońska to szycie przez całą grubość bloku, którego ścieg staje się ozdobą grzbietu. Przećwiczymy kilka klasycznych wzorów i zszyjemy dwa zeszyty z różnych papierów.\n\nTo dobry wybór na pierwsze spotkanie z introligatorstwem — także dla młodzieży od 12 lat.",
+      "program": [
+        "krótko o historii oprawy w Japonii i Chinach",
+        "przygotowanie bloku i okładek",
+        "dziurkowanie według szablonu",
+        "szycie: ścieg podstawowy i ścieg „żółwia skorupa”"
+      ],
+      "duration_minutes": 180,
+      "price": 16000,
+      "capacity": 8,
+      "level": "dla początkujących, od 12 lat",
+      "includes": "materiały, narzędzia, herbata",
+      "takeaway": "dwa zeszyty w oprawie japońskiej",
+      "image": "warsztaty-szycie",
+      "sort": 20,
+      "sessions": [
+        { "start": "2026-11-21 11:00", "end": "2026-11-21 14:00", "location": "Pracownia Bookowska, Sopot" }
+      ]
+    },
+    {
+      "slug": "notes-w-oprawie-polplociennej",
+      "title": "Notes w oprawie półpłóciennej",
+      "kind": "open",
+      "summary": "Dla osób po pierwszych warsztatach: płócienny grzbiet, okładki z papieru marmurkowego, kapitałka i zakładka.",
+      "description": "Rozwinięcie warsztatów z twardej oprawy. Zszyjesz grubszy blok, dobierzesz płótno i papier marmurkowy, wkleisz kapitałkę i zakładkę — tak jak w notesach z mojego sklepu.\n\nWarsztaty są dłuższe i w mniejszej grupie, bo każdy etap wymaga precyzji.",
+      "program": [
+        "dobór materiałów: płótno, papier marmurkowy, tektura",
+        "szycie grubszego bloku, kapitałka i zakładka",
+        "okładka półpłócienna: grzbiet i boki",
+        "wykończenie, wyklejki i prasowanie"
+      ],
+      "duration_minutes": 360,
+      "price": 32000,
+      "capacity": 6,
+      "level": "średnio zaawansowany",
+      "includes": "materiały, narzędzia, obiad i herbata",
+      "takeaway": "notes w oprawie półpłóciennej z papierem marmurkowym",
+      "image": "warsztaty-pomiar",
+      "sort": 30,
+      "sessions": [
+        { "start": "2026-12-12 10:00", "end": "2026-12-12 16:00", "location": "Pracownia Bookowska, Sopot" }
+      ]
+    },
+    {
+      "slug": "warsztaty-dla-grup",
+      "title": "Warsztaty dla grup i firm",
+      "kind": "request",
+      "summary": "Warsztaty na zamówienie dla zespołów, szkół, bibliotek, na urodziny i wieczory panieńskie — w pracowni albo u Was.",
+      "description": "Program, długość i technikę dopasuję do grupy: od godzinnego szycia zeszytów po całodniowe warsztaty z twardej oprawy. Mogę przyjechać z narzędziami i materiałami do Was — do firmy, szkoły czy domu kultury.\n\nNapisz, ile osób planujesz, w jakim terminie i miejscu — przygotuję propozycję i wycenę.",
+      "program": [],
+      "duration_minutes": null,
+      "price": null,
+      "capacity": 20,
+      "level": "dowolny",
+      "includes": "materiały i narzędzia",
+      "takeaway": "zależnie od wybranej techniki",
+      "image": "warsztaty-sala",
+      "sort": 40,
+      "sessions": []
+    },
+    {
+      "slug": "prelekcje-i-pokazy",
+      "title": "Prelekcje i pokazy",
+      "kind": "request",
+      "summary": "Historia książki i introligatorstwa — od zwojów i oprawy japońskiej po kodeks. Dla bibliotek, domów kultury i festiwali.",
+      "description": "Opowiadam, jak powstawały książki w Chinach, Japonii, Indiach i Europie, i pokazuję na żywo, jak pracuje introligator. Prelekcję można połączyć z krótkimi warsztatami dla uczestników.",
+      "program": [],
+      "duration_minutes": 90,
+      "price": null,
+      "capacity": 60,
+      "level": "dla każdego",
+      "includes": "prezentacja i pokaz narzędzi",
+      "takeaway": "wiedza i dobre pytania",
+      "image": "warsztaty-prelekcja",
+      "sort": 50,
+      "sessions": []
+    }
+  ]
+}

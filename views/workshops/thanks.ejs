@@ -1,0 +1,18 @@
+<section class="page-head grid-paper rule-bottom">
+  <div class="container">
+    <span class="status-stamp">Zgłoszenie przyjęte</span>
+    <h1 class="display"><%= f.typo('Dziękuję! Odezwę się w ciągu dwóch dni roboczych.') %></h1>
+    <% if (session) { %>
+      <p class="lead"><%= workshop.title %> · <%= f.dateLong(session.starts_at) %>, <%= f.time(session.starts_at) %>–<%= f.time(session.ends_at) %></p>
+      <p><%= f.typo('Miejsce jest wstępnie zarezerwowane. W odpowiedzi wyślę potwierdzenie i dane do płatności — rezerwacja staje się ostateczna po wpłacie.') %></p>
+    <% } else { %>
+      <p class="lead"><%= workshop.title %></p>
+      <p><%= f.typo('Przygotuję odpowiedź z propozycją terminu i wyceną.') %></p>
+    <% } %>
+    <p class="small text-muted-ink"><%= f.typo('Nie widzisz wiadomości? Zajrzyj do folderu spam albo napisz bezpośrednio') %><% if (contact.email) { %>: <a href="mailto:<%= contact.email %>"><%= contact.email %></a><% } %>.</p>
+    <div class="actions mt-4">
+      <a class="btn btn-line" href="/warsztaty">Wróć do warsztatów</a>
+      <a class="btn btn-line" href="/sklep">Zajrzyj do sklepu</a>
+    </div>
+  </div>
+</section>

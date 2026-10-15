@@ -1,0 +1,10 @@
+<article class="product-card">
+  <a href="/sklep/<%= product.slug %>">
+    <%- include('photo', { key: product.images[0], sizes: '(min-width: 1200px) 380px, (min-width: 576px) 45vw, 100vw', ratio: '4x5', hoverColor: true, alt: product.name }) %>
+    <h3><%= product.name %><% if (!product.available) { %><span class="badge-line">wyprzedane</span><% } else if (product.unique) { %><span class="badge-line">1 egz.</span><% } %></h3>
+    <% if (product.width_mm && product.height_mm) { %>
+    <p class="product-meta"><%= product.width_mm %> × <%= product.height_mm %> mm<% if (product.sheets) { %> · <%= product.sheets %> <%= f.plural(product.sheets, 'karta', 'karty', 'kart') %><% } %></p>
+    <% } %>
+    <p class="product-price"><%= f.money(product.price) %></p>
+  </a>
+</article>

@@ -1,0 +1,39 @@
+<%# Kolejność i zestaw znaczników według HTML5 Boilerplate 9 (index.html),
+    rozszerzone o SEO (canonical, Open Graph, JSON-LD). Wszystkie zasoby
+    z własnego serwera - CSP pozostaje przy 'self'. %>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %></title>
+<link rel="preload" href="/vendor/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/vendor/fonts/ibm-plex-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="<%= asset('/vendor/fonts/fonts.css') %>">
+<link rel="stylesheet" href="<%= asset('/vendor/h5bp/style.css') %>">
+<link rel="stylesheet" href="<%= asset('/vendor/bootstrap/bootstrap.min.css') %>">
+<link rel="stylesheet" href="<%= asset('/css/custom.css') %>">
+<meta name="description" content="<%= description %>">
+<meta name="robots" content="<%= noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large' %>">
+<% if (canonicalUrl) { %>
+<link rel="canonical" href="<%= canonicalUrl %>">
+<% } %>
+
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= description %>">
+<meta property="og:type" content="<%= ogType %>">
+<% if (canonicalUrl) { %>
+<meta property="og:url" content="<%= canonicalUrl %>">
+<% } %>
+<meta property="og:image" content="<%= ogImage %>">
+<meta property="og:image:alt" content="<%= site.legalBrand %>">
+<meta property="og:locale" content="<%= site.locale %>">
+<meta property="og:site_name" content="<%= site.name %>">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<% for (const ld of jsonLdHtml) { %>
+<script type="application/ld+json"><%- ld %></script>
+<% } %>

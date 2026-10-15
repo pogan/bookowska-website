@@ -1,0 +1,96 @@
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span>O mnie</nav>
+    <span class="label"><%= site.owner %> · <%= site.role %></span>
+    <h1 class="display"><%= f.typo('Poznaj swojego oprawcę') %></h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-md-5">
+        <%- include('../partials/photo', { key: 'karina-profil', sizes: '(min-width: 768px) 40vw, 100vw', ratio: '4x5', fig: '01', caption: site.owner, priority: true }) %>
+      </div>
+      <div class="col-md-7 col-lg-6 offset-lg-1 prose">
+        <p class="lead"><%= f.typo('Cześć! Tu Kara, czyli Bookowska, i jestem oprawcą, czyli introligatorem. Lubię książki i papier, więc chyba całkiem nieźle trafiłam z wyborem ścieżki zawodowej :)') %></p>
+        <p><%= f.typo('Oficjalnie introligatorstwem zajmuję się od 2016 roku, kiedy to zdobyłam tytuł zawodowy w tej dziedzinie. Od tego czasu złożyłam setki książek, przeprowadziłam dziesiątki warsztatów, prelekcji, pokazów i… ciągle mi mało!') %></p>
+        <p><%= f.typo('Prowadzę małą pracownię w Sopocie — to tam można mnie najczęściej spotkać, wpaść na herbatę i obgadać pomysł.') %></p>
+        <p><%= f.typo('Najbardziej lubię pracować nad nietypowymi projektami i z chęcią pomogę Ci przenieść Twoją wizję z komputera do świata materialnego.') %></p>
+        <p><%= f.typo('Cieszę się, że tu trafiłeś, i mam nadzieję, że do zobaczenia!') %></p>
+        <dl class="spec">
+          <div><dt>W zawodzie od</dt><dd><%= site.since %></dd></div>
+          <div><dt>Pracownia</dt><dd><%= site.city %></dd></div>
+          <div><dt>Ulubione</dt><dd>nietypowe projekty</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="na-zamowienie">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '01', title: 'Na zamówienie' }) %>
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <%- include('../partials/photo', { key: 'nozyczki', sizes: '(min-width: 992px) 50vw, 100vw', ratio: '3x2', fig: '02', caption: 'Praca w pracowni' }) %>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <h2 class="h-section"><%= f.typo('Oprawię Twój projekt — od pojedynczego egzemplarza.') %></h2>
+        <p><%= f.typo('Książka autorska, portfolio, album, notes z Twoim papierem albo pudło na wyjątkowy przedmiot. Napisz, co masz w głowie (albo w komputerze) — dobierzemy technikę, materiały i format.') %></p>
+        <div class="actions mt-4">
+          <% if (contact.email) { %>
+            <a class="btn btn-ink" href="mailto:<%= contact.email %>?subject=<%= encodeURIComponent('Zamówienie indywidualne') %>">Napisz do mnie</a>
+          <% } else { %>
+            <a class="btn btn-ink" href="/kontakt">Napisz do mnie</a>
+          <% } %>
+          <a class="btn btn-line" href="/warsztaty">Warsztaty</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="dyplom">
+  <div class="container">
+    <%- include('../partials/sheet-head', { no: '02', title: 'Książki dyplomowe', aside: '2018' }) %>
+    <div class="row g-4 mb-4">
+      <div class="col-lg-8">
+        <h2 class="h-section"><%= f.typo('Cykl książek-obiektów pokazany na wystawie „Najlepsze dyplomy 2018” w Wielkiej Zbrojowni w Gdańsku.') %></h2>
+        <p class="text-muted-ink mono small">Fotografie: Paweł Lęcki</p>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-8">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-harmonijka', sizes: '(min-width: 768px) 66vw, 100vw', fig: '03' }) %>
+      </div>
+      <div class="col-md-4">
+        <%- include('../partials/photo', { credit: false, key: 'karina-ramka', sizes: '(min-width: 768px) 33vw, 100vw', ratio: '4x5', fig: '04' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-ciecia', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '05' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-lektura', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '06' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-stojak', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '07' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-pudlo', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '08' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-faktura', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '09' }) %>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-rekawiczka', sizes: '(min-width: 992px) 33vw, (min-width: 576px) 50vw, 100vw', ratio: '3x2', fig: '10' }) %>
+      </div>
+      <div class="col-md-6">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-ekspozycja', sizes: '(min-width: 768px) 50vw, 100vw', ratio: '3x2', fig: '11' }) %>
+      </div>
+      <div class="col-md-6">
+        <%- include('../partials/photo', { credit: false, key: 'dyplom-zbrojownia', sizes: '(min-width: 768px) 50vw, 100vw', ratio: '3x2', fig: '12', caption: 'Wielka Zbrojownia, Gdańsk' }) %>
+      </div>
+    </div>
+  </div>
+</section>

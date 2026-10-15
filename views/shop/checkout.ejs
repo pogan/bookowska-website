@@ -1,0 +1,136 @@
+<%
+  const err = (field) => errors[field];
+  const invalid = (field) => (errors[field] ? ' is-invalid' : '');
+  const val = (field) => (values[field] ?? '');
+  const selected = methods.find((m) => m.id === values.shipping);
+  const describedBy = (field) => (errors[field] ? ` aria-describedby="${field}-err"` : '');
+%>
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="Okruszki"><a href="/">Start</a><span aria-hidden="true">/</span><a href="/koszyk">Koszyk</a><span aria-hidden="true">/</span>Zamówienie</nav>
+    <span class="label">Krok 2 z 3 · dane i dostawa</span>
+    <h1 class="display">Zamówienie</h1>
+  </div>
+</section>
+
+<section class="sheet pt-0">
+  <div class="container">
+    <% summary.notices.forEach((n) => { %>
+      <div class="notice notice-warning" role="status"><p><%= n %></p></div>
+    <% }) %>
+    <% if (formError) { %>
+      <div class="notice notice-error" role="alert"><p><%= formError %></p></div>
+    <% } %>
+    <% if (Object.keys(errors).length) { %>
+      <div class="notice notice-error" role="alert"><p>Popraw zaznaczone pola formularza.</p></div>
+    <% } %>
+
+    <form method="post" action="/zamowienie" novalidate id="checkout">
+      <div class="row g-5">
+        <div class="col-lg-7">
+          <fieldset class="form-section">
+            <legend class="form-legend">01 · Dane kontaktowe</legend>
+            <div class="mb-3">
+              <label class="form-label" for="name">Imię i nazwisko</label>
+              <input class="form-control<%= invalid('name') %>" id="name" name="name" autocomplete="name" required maxlength="100" value="<%= val('name') %>"<%- describedBy('name') %>>
+              <% if (err('name')) { %><div class="invalid-feedback" id="name-err"><%= err('name') %></div><% } %>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-7">
+                <label class="form-label" for="email">E-mail</label>
+                <input class="form-control<%= invalid('email') %>" id="email" name="email" type="email" autocomplete="email" required maxlength="200" value="<%= val('email') %>"<%- describedBy('email') %>>
+                <% if (err('email')) { %><div class="invalid-feedback" id="email-err"><%= err('email') %></div><% } %>
+              </div>
+              <div class="col-sm-5">
+                <label class="form-label" for="phone">Telefon</label>
+                <input class="form-control<%= invalid('phone') %>" id="phone" name="phone" type="tel" autocomplete="tel" maxlength="30" value="<%= val('phone') %>"<%- describedBy('phone') %>>
+                <% if (err('phone')) { %><div class="invalid-feedback" id="phone-err"><%= err('phone') %></div><% } %>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">02 · Dostawa</legend>
+            <% methods.forEach((m) => { %>
+            <label class="choice">
+              <input class="form-check-input" type="radio" name="shipping" value="<%= m.id %>" data-price="<%= m.price %>" data-needs="<%= m.needs || '' %>"<%- values.shipping === m.id ? ' checked' : '' %>>
+              <span class="choice-body">
+                <span class="choice-title"><span><%= m.label %></span><span class="mono"><%= f.money(m.price) %></span></span>
+                <span class="choice-detail"><%= m.detail %></span>
+              </span>
+            </label>
+            <% }) %>
+            <% if (err('shipping')) { %><div class="text-danger small"><%= err('shipping') %></div><% } %>
+
+            <%# Bez JS widoczne są oba zestawy pól; public/js/main.js pokazuje tylko ten
+                pasujący do wybranej dostawy. Serwer i tak waliduje tylko potrzebne. %>
+            <div class="ship-fields mt-4" data-for="locker">
+              <span class="label mb-2">Paczkomat InPost</span>
+              <label class="form-label" for="locker">Kod paczkomatu</label>
+              <input class="form-control qty-input w-auto<%= invalid('locker') %>" id="locker" name="locker" maxlength="20" autocomplete="off" placeholder="SOP01M" value="<%= val('locker') %>"<%- describedBy('locker') %>>
+              <% if (err('locker')) { %><div class="invalid-feedback" id="locker-err"><%= err('locker') %></div><% } %>
+              <div class="form-text">Kod znajdziesz na mapie paczkomatów InPost.</div>
+            </div>
+
+            <div class="ship-fields mt-4" data-for="address">
+              <span class="label mb-2">Kurier — adres dostawy</span>
+              <div class="mb-3">
+                <label class="form-label" for="street">Ulica i numer</label>
+                <input class="form-control<%= invalid('street') %>" id="street" name="street" autocomplete="street-address" maxlength="150" value="<%= val('street') %>"<%- describedBy('street') %>>
+                <% if (err('street')) { %><div class="invalid-feedback" id="street-err"><%= err('street') %></div><% } %>
+              </div>
+              <div class="row g-3">
+                <div class="col-5 col-sm-4">
+                  <label class="form-label" for="postcode">Kod pocztowy</label>
+                  <input class="form-control<%= invalid('postcode') %>" id="postcode" name="postcode" autocomplete="postal-code" inputmode="numeric" maxlength="6" placeholder="00-000" value="<%= val('postcode') %>"<%- describedBy('postcode') %>>
+                  <% if (err('postcode')) { %><div class="invalid-feedback" id="postcode-err"><%= err('postcode') %></div><% } %>
+                </div>
+                <div class="col-7 col-sm-8">
+                  <label class="form-label" for="city">Miejscowość</label>
+                  <input class="form-control<%= invalid('city') %>" id="city" name="city" autocomplete="address-level2" maxlength="80" value="<%= val('city') %>"<%- describedBy('city') %>>
+                  <% if (err('city')) { %><div class="invalid-feedback" id="city-err"><%= err('city') %></div><% } %>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">03 · Uwagi</legend>
+            <label class="form-label visually-hidden" for="notes">Uwagi do zamówienia</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="1000" placeholder="Np. prośba o dedykację albo ozdobne pakowanie"><%= val('notes') %></textarea>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend class="form-legend">04 · Zgody</legend>
+            <div class="form-check">
+              <input class="form-check-input<%= invalid('terms') %>" type="checkbox" id="terms" name="terms" value="on"<%- values.terms ? ' checked' : '' %>>
+              <label class="form-check-label" for="terms">Akceptuję <a href="/regulamin" target="_blank">regulamin sklepu</a>.</label>
+              <% if (err('terms')) { %><div class="invalid-feedback"><%= err('terms') %></div><% } %>
+            </div>
+            <p class="small text-muted-ink mt-3"><%= f.typo('Dane wykorzystam do realizacji zamówienia i kontaktu w jego sprawie —') %> <a href="/polityka-prywatnosci">polityka prywatności</a>.</p>
+          </fieldset>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="summary-box box">
+            <span class="label">Podsumowanie</span>
+            <ul class="ship-list mb-3">
+              <% summary.lines.forEach(({ product, quantity, total }) => { %>
+              <li><span><%= quantity %> × <%= product.name %></span><span class="mono"><%= f.money(total) %></span></li>
+              <% }) %>
+            </ul>
+            <dl class="totals" data-subtotal="<%= summary.subtotal %>">
+              <div><dt>Produkty</dt><dd><%= f.money(summary.subtotal) %></dd></div>
+              <div><dt>Dostawa</dt><dd data-shipping-cost><%= selected ? f.money(selected.price) : '—' %></dd></div>
+              <div class="grand"><dt>Do zapłaty</dt><dd data-grand-total><%= f.money(summary.subtotal + (selected ? selected.price : 0)) %></dd></div>
+            </dl>
+            <button class="btn btn-ink w-100 mt-4" type="submit">Zamawiam i płacę</button>
+            <% if (testMode) { %>
+            <p class="small text-muted-ink mt-3 mb-0"><%= f.typo('Tryb testowy: po kliknięciu zobaczysz symulację bramki płatności. Nic nie zostanie pobrane.') %></p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

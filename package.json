@@ -1,0 +1,44 @@
+{
+  "name": "bookowska-website",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Strona pracowni introligatorskiej Bookowska (Karina Lewandowska, Sopot): wizytówka, warsztaty z zapisami i prosty sklep.",
+  "main": "app.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test": "node --test",
+    "seed": "node scripts/seed.js",
+    "vendor": "node scripts/vendor.js",
+    "images": "node scripts/build-images.js",
+    "icons": "node scripts/generate-icons.js",
+    "dev-session": "node scripts/dev-session.js"
+  },
+  "author": "Karol Konop",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "compression": "^1.8.2",
+    "dotenv": "^18.0.8",
+    "ejs": "^7.0.1",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "nodemailer": "^10.1.1",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.2",
+    "html5-boilerplate": "^9.0.1",
+    "sharp": "^0.35.5"
+  }
+}

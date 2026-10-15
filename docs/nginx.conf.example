@@ -1,0 +1,50 @@
+# Bookowska — pm2: bookowska-website, port 3006
+# Szablon dla /etc/nginx/sites-available/bookowska-website na VPS "websites".
+# Zamień example.pl na docelową domenę, potem:
+#   sudo ln -s /etc/nginx/sites-available/bookowska-website /etc/nginx/sites-enabled/
+#   sudo certbot certonly --webroot -w /var/www/certbot -d example.pl -d www.example.pl
+#   sudo nginx -t && sudo systemctl reload nginx
+# (blok 443 włącz dopiero, gdy certyfikat istnieje)
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name example.pl;
+
+    ssl_certificate     /etc/letsencrypt/live/example.pl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.pl/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Zgłoszenia i zamówienia to krótkie formularze (Express przyjmuje do 20 kB).
+    client_max_body_size 64k;
+
+    location / {
+        proxy_pass http://127.0.0.1:3006;
+        include snippets/proxy.conf;
+    }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name www.example.pl;
+
+    ssl_certificate     /etc/letsencrypt/live/example.pl/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.pl/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    return 301 https://example.pl$request_uri;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name example.pl www.example.pl;
+
+    location ^~ /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 301 https://example.pl$request_uri; }
+}

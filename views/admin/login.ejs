@@ -8,6 +8,8 @@
       <% } %>
       <% if (typeof notice !== 'undefined' && notice) { %>
         <div class="notice notice-warning" role="status"><p><%= notice %></p></div>
+      <% } else if (typeof googleConfigured !== 'undefined' && !googleConfigured) { %>
+        <div class="notice notice-warning" role="status"><p><%= f.typo('Logowanie Google nie jest jeszcze skonfigurowane — uzupełnij GOOGLE_CLIENT_ID i GOOGLE_CLIENT_SECRET w .env.') %></p></div>
       <% } %>
       <p class="small text-muted-ink"><%= f.typo('Dostęp mają wyłącznie konta Google administratorów pracowni.') %></p>
       <% if (typeof googleConfigured === 'undefined' || googleConfigured) { %>

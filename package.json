@@ -16,7 +16,8 @@
     "vendor": "node scripts/vendor.js",
     "images": "node scripts/build-images.js",
     "icons": "node scripts/generate-icons.js",
-    "dev-session": "node scripts/dev-session.js"
+    "dev-session": "node scripts/dev-session.js",
+    "backup": "node scripts/backup.js"
   },
   "author": "Karol Konop",
   "license": "UNLICENSED",

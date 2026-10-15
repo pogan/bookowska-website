@@ -4,8 +4,10 @@ Website for **Karina Lewandowska (Bookowska)**, a bookbinder running a small
 studio in Sopot, Poland: a business card, a workshop calendar with sign-ups and a
 small shop for hand-bound notebooks and gift vouchers.
 
-Built by Karol Konop. Status: pre-launch — no domain yet, payments are simulated
-until the studio picks a payment operator.
+Built by Karol Konop. Status: in development — staging at
+**bookowska.vamude.com**; production will run on the client's own VPS at
+**bookowska.shop**. Payments are simulated until the studio picks a payment
+operator.
 
 ## What it does
 
@@ -13,8 +15,8 @@ until the studio picks a payment operator.
   contact. Visual language of a technical drawing: black ink on white paper,
   graph-paper backgrounds, printer's crop marks around photos, figure captions
   ("Rys. 01"), section heads like drawing-sheet labels and a drawing title block
-  as the footer. Photos are shown in greyscale; shop photos regain colour on
-  hover and on the product page.
+  as the footer. Photos are shown in greyscale — except product photos in the
+  shop, which are always in colour.
 - **Workshops** — workshop types and dated sessions with live seat counts.
   Signing up is "by e-mail" for now: the form stores the sign-up in SQLite,
   e-mails the studio (with `Reply-To` set to the participant) and sends the
@@ -25,8 +27,14 @@ until the studio picks a payment operator.
   pickup, order status page. Each product page renders a **dimensioned technical
   drawing** of the item (front and side view, dimension lines, centre lines,
   hatching for the cloth spine) generated from its dimensions in the database.
-- **Admin panel** (`/admin`) — read-only overview of upcoming sessions with
-  occupancy, sign-ups and orders, behind Google sign-in.
+- **Admin panel** (`/admin`, Google sign-in) — overview of upcoming sessions
+  with occupancy, sign-ups and orders, and **events management**: create, edit,
+  close, cancel and delete workshop sessions and workshop types (description,
+  programme, price, group size, photo picked from the image library). The rules
+  protect people who already signed up: a session with sign-ups can't be
+  deleted (only cancelled) or moved to another workshop, and no limit can drop
+  below the number of people already registered. Each session page lists its
+  sign-ups with a "mail everyone" (BCC) link.
 
 ## Architecture notes
 
@@ -62,10 +70,10 @@ until the studio picks a payment operator.
   — helmet's default `no-referrer` would make browsers send `Origin: null`).
   Rate limits on sign-ups, checkout, cart and login; a honeypot field instead of
   a CAPTCHA.
-- **Content** (workshops, sessions, products) lives in `db/seed/*.json` and is
-  synced into SQLite with `npm run seed` — idempotent, keeps sold-out stock
-  untouched, never deletes sessions that have sign-ups. A CRUD panel can replace
-  this later without schema changes.
+- **Content**: workshops and sessions are managed in the admin panel — the
+  database is the source of truth and `db/seed/workshops.json` is only imported
+  into an empty database. Products still live in `db/seed/products.json` and are
+  synced with `npm run seed` (idempotent, never resets sold-out stock).
 - **Images**: `npm run images` turns the client's source photos (kept out of the
   repo) into cropped WebP `srcset`s with EXIF/GPS stripped and writes
   `lib/imageManifest.json`; the logo SVGs were extracted from the original `.ai`
@@ -92,17 +100,22 @@ database is filled from `db/seed/*.json`.
 |---|---|
 | `npm start` / `npm run dev` | Run the server (`dev` restarts on file changes). |
 | `npm test` | `node:test` suite on throwaway databases: orders and stock, payment idempotency, seat limits, auth rules, HTTP routes (CSP, CSRF, full purchase flow). |
-| `npm run seed [-- --reset-stock]` | Sync `db/seed/*.json` into the database. |
+| `npm run seed [-- --reset-stock]` | Sync products from `db/seed/products.json` (workshops are managed in the panel). |
+| `npm run backup` | Consistent SQLite backup to `data/backups/` (keeps the last 30; `BACKUP_DIR`, `BACKUP_KEEP`). |
 | `npm run dev-session [-- email]` | Print a cookie for a local admin session (refuses to run in production) — for checking `/admin` before OAuth is set up. |
 | `npm run images` | Rebuild photos from `input_data/` (see `scripts/images.config.js`). |
 | `npm run icons` | Rebuild favicons, app icons and `og-cover.jpg`. |
 | `npm run vendor` | Re-copy Bootstrap, H5BP styles, fonts and the icon sprite into `public/vendor`. |
 
-Google OAuth: create an OAuth client (Web application) in Google Cloud Console
-and add `http://localhost:3006/auth/google/callback` (and later
-`https://<domain>/auth/google/callback`) as an authorised redirect URI.
+Google OAuth: the OAuth client needs one authorised redirect URI per
+environment — `http://localhost:3006/auth/google/callback`,
+`https://bookowska.vamude.com/auth/google/callback` and later
+`https://bookowska.shop/auth/google/callback`.
 
-## Deployment (VPS "websites", nginx + PM2)
+## Deployment (nginx + PM2)
+
+Staging runs on the shared VPS "websites" at `bookowska.vamude.com`; production
+will use the same layout on the client's own VPS at `bookowska.shop`.
 
 ```bash
 cd ~/websites && git clone git@github.com:pogan/bookowska-website.git
@@ -113,16 +126,18 @@ pm2 start ecosystem.config.js && pm2 save      # port 3006
 
 Then add an nginx server block based on `docs/nginx.conf.example` and issue the
 certificate with certbot. Updates: `git pull && npm ci --omit=dev && pm2 restart
-bookowska-website`. The app sets `trust proxy` and secure cookies in production,
-so it must sit behind TLS with `X-Forwarded-Proto` forwarded (the shared
-`snippets/proxy.conf` already does that).
+bookowska-website`. The app listens on 127.0.0.1 in production, sets `trust
+proxy` and secure cookies, so it must sit behind TLS with `X-Forwarded-Proto`
+forwarded (the shared `snippets/proxy.conf` already does that). Schedule
+`npm run backup` from cron once real data lives in the panel.
 
 ## Before launch
 
-- domain → `PUBLIC_BASE_URL`, nginx + certificate, then `ALLOW_INDEXING=true`;
+- bookowska.shop on the client's VPS → `PUBLIC_BASE_URL`, nginx + certificate,
+  OAuth redirect URI, backups in cron, then `ALLOW_INDEXING=true`;
 - studio e-mail, phone and company details (`CONTACT_*`, `SELLER_*`), SMTP;
-- real workshop offer, dates and products in `db/seed/` (current ones are
-  examples), photo credits for the workshop photos;
+- real workshop offer and dates (in the panel) and products (`db/seed/`) — the
+  current ones are examples; photo credits for the workshop photos;
 - payment operator → `lib/payments/<operator>.js` + webhook route, add its
   domain to `form-action` in the CSP, review the draft terms and privacy policy.
 
@@ -132,11 +147,13 @@ so it must sit behind TLS with `X-Forwarded-Proto` forwarded (the shared
 app.js                 Express entry point (middleware order, res.page, errors)
 db/                    schema.sql, connection, seed/*.json (offer content)
 lib/                   config, auth, security, orders, cart, catalog, shipping,
-                       workshops, notifications/mailer, payments/, seo, images,
-                       drawing (product SVG), format (money, dates, Polish typography)
-routes/                pages, workshops, shop, payments (mock gateway), auth, admin
+                       workshops, events (admin CRUD), notifications/mailer,
+                       payments/, seo, images, drawing (product SVG),
+                       format (money, dates, Polish typography)
+routes/                pages, workshops, shop, payments (mock gateway), auth,
+                       admin + adminEvents
 views/                 layout + partials, pages, workshops, shop, legal, admin, errors
 public/                css/custom.css, js/main.js, images, vendor/ (generated)
-scripts/               seed, images, icons, vendor, dev-session
+scripts/               seed, backup, images, icons, vendor, dev-session
 tests/                 node:test suites
 ```

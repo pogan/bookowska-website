@@ -7,8 +7,9 @@ Guidance for Claude Code when working in this repository.
 Website for Karina Lewandowska's bookbinding studio **Bookowska** (Sopot): business
 card, workshop calendar with e-mail sign-ups, small shop with a **simulated**
 payment gateway, read-only admin panel behind Google sign-in. Polish UI, code
-comments in Polish, README in English. No domain yet; target is the VPS
-"websites" (nginx reverse proxy + PM2, port **3006**, Node 20 on the server).
+comments in Polish, README in English. Staging: **bookowska.vamude.com** on the
+shared VPS "websites" (nginx reverse proxy + PM2, port **3006**, Node 20).
+Production: **bookowska.shop** on the client's own VPS, same nginx + PM2 layout.
 
 ## Commands
 
@@ -17,9 +18,11 @@ comments in Polish, README in English. No domain yet; target is the VPS
   Node 20 on the server has no glob support and `node --test tests/` fails on 24).
   `tests/helpers.js` must be required first — it sets `NODE_ENV=test` and a temp
   `DB_PATH`; `lib/config.js` skips `.env` in tests.
-- `npm run seed` — sync `db/seed/*.json` → SQLite. Offer content (workshops,
-  sessions, products) is edited there, not in a panel. Stock is only written on
-  first import (`-- --reset-stock` to force).
+- `npm run seed` — sync **products** from `db/seed/products.json` (stock only on
+  first import; `-- --reset-stock` to force). Workshops and sessions are managed
+  in the panel (`/admin/wydarzenia`, `lib/events.js`); `db/seed/workshops.json`
+  is imported only into an empty database — never sync it over real data.
+- `npm run backup` — SQLite backup API → `data/backups/` (retention `BACKUP_KEEP`).
 - `npm run images` / `npm run icons` / `npm run vendor` — regenerate committed
   assets. `images` needs `input_data/` (client originals, gitignored).
 - `npm run dev-session` — prints a `bookowska.sid=…` cookie for a local root
@@ -48,7 +51,13 @@ comments in Polish, README in English. No domain yet; target is the VPS
   with helmet's default `no-referrer` browsers send `Origin: null` and every form
   breaks. Future webhooks from payment operators must be mounted **before** it.
 - Auth: only `ROOT_EMAIL` / `ADMIN_EMAILS` / `users.role='admin'` can sign in;
-  roles are recomputed per request (`lib/auth.js`).
+  roles are recomputed per request (`lib/auth.js`). Admin routes live behind the
+  guard in `routes/admin.js`; `routes/adminEvents.js` is mounted after it.
+- Events CRUD invariants (`lib/events.js`, enforced in transactions): sessions
+  with sign-ups can't be deleted (cancel instead) or moved to another workshop;
+  capacities can't drop below people already signed up; workshops with sessions
+  or sign-ups can't be deleted (hide instead). Session statuses: open / closed /
+  cancelled.
 
 ## Styling
 
@@ -56,7 +65,7 @@ comments in Polish, README in English. No domain yet; target is the VPS
 CSS variables (`--bs-*`), zero border radius, IBM Plex Sans/Mono. Visual
 vocabulary: `.sheet` + `partials/sheet-head` (numbered section heads),
 `partials/photo` (crop marks, "Rys. NN" captions, greyscale unless
-`color`/`hoverColor`), `.spec` / `.spec-table` (parameter tables), `.title-block`
+`color`/`hoverColor` — shop product photos always use `color`), `.spec` / `.spec-table` (parameter tables), `.title-block`
 (footer), `.grid-paper`, `.test-banner`. Keep it almost black-and-white.
 
 ## Gotchas found the hard way

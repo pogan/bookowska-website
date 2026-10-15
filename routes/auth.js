@@ -10,6 +10,7 @@ router.get('/auth/google', limits.auth, (req, res, next) => {
     return res.status(503).page('admin/login', {
       title: `Logowanie | ${site.name}`,
       noindex: true,
+      googleConfigured: false,
       notice: 'Logowanie Google nie jest skonfigurowane — uzupełnij GOOGLE_CLIENT_ID i GOOGLE_CLIENT_SECRET w .env.',
     });
   }

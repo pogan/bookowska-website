@@ -15,6 +15,13 @@ const router = express.Router();
 
 const crumbs = (...extra) => seo.breadcrumbs([{ name: 'Start', path: '/' }, { name: 'Sklep', path: '/sklep' }, ...extra]);
 
+// Koszyk, formularz i status zamówienia zawierają dane klienta - bez cache
+// (współdzielone komputery, przycisk "wstecz" po wylogowaniu itp.).
+function noStore(req, res, next) {
+  res.set('Cache-Control', 'no-store');
+  next();
+}
+
 // Komunikat do pokazania po przekierowaniu (POST -> redirect -> GET).
 function flash(req, type, text) {
   req.session.flash = { type, text };
@@ -52,7 +59,7 @@ router.get('/sklep/:slug', (req, res, next) => {
   });
 });
 
-router.get('/koszyk', (req, res) => {
+router.get('/koszyk', noStore, (req, res) => {
   orders.expireStale();
   const summary = cart.summarize(req.session);
   res.page('shop/cart', {
@@ -96,12 +103,12 @@ function renderCheckout(res, req, { values = {}, errors = {}, formError = null, 
   });
 }
 
-router.get('/zamowienie', (req, res) => {
+router.get('/zamowienie', noStore, (req, res) => {
   if (cart.count(req.session) === 0) return res.redirect(303, '/koszyk');
   renderCheckout(res, req);
 });
 
-router.post('/zamowienie', limits.checkout, async (req, res) => {
+router.post('/zamowienie', noStore, limits.checkout, async (req, res) => {
   const summary = cart.summarize(req.session);
   if (!summary.lines.length) return res.redirect(303, '/koszyk');
 
@@ -134,7 +141,7 @@ router.post('/zamowienie', limits.checkout, async (req, res) => {
   res.redirect(303, redirectUrl);
 });
 
-router.get('/zamowienie/:token', (req, res, next) => {
+router.get('/zamowienie/:token', noStore, (req, res, next) => {
   const order = orders.getByToken(req.params.token);
   if (!order) return next();
   if (order.status === 'paid' && req.session.pendingOrder === order.token) {

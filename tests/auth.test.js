@@ -34,7 +34,7 @@ test('niepotwierdzony e-mail jest odrzucany nawet dla roota', async () => {
 
 test('obce konto Google: odmowa i brak zapisu w bazie', async () => {
   const before = userCount();
-  const { user, info } = await run(profile('ktos@gmail.com'));
+  const { user, info } = await run(profile('obcy@example.org'));
   assert.equal(user, false);
   assert.equal(info.message, 'forbidden');
   assert.equal(userCount(), before);

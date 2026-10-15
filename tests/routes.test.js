@@ -101,6 +101,7 @@ test('zakup: koszyk -> zamówienie -> symulowana płatność -> opłacone, koszy
   assert.equal(added.status, 303);
   assert.ok(c.hasSession());
   const cart = await c.get('/koszyk');
+  assert.equal(cart.headers.get('cache-control'), 'no-store');
   assert.match(cart.text, /Notes marmurkowy — żółć i grafit/);
   assert.match(cart.text, /Koszyk <span class="cart-count"[^>]*>\[1\]/);
 

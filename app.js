@@ -157,8 +157,8 @@ app.use((err, req, res, next) => {
 });
 
 if (require.main === module) {
-  app.listen(config.port, () => {
-    console.log(`bookowska-website ${APP_VERSION.label} nasłuchuje na http://localhost:${config.port}`);
+  app.listen(config.port, config.host, () => {
+    console.log(`bookowska-website ${APP_VERSION.label} nasłuchuje na http://${config.host || 'localhost'}:${config.port}`);
   });
 }
 

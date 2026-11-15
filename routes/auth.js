@@ -1,11 +1,16 @@
 const express = require('express');
 const site = require('../lib/site');
-const { passport, googleConfigured } = require('../lib/auth');
+const config = require('../lib/config');
+const { passport, googleConfigured, previewUser } = require('../lib/auth');
 const { limits } = require('../lib/security');
 
 const router = express.Router();
 
 router.get('/auth/google', limits.auth, (req, res, next) => {
+  // Podgląd dla klientki: logowanie zawsze się udaje, bez Google (lib/config.js).
+  if (config.previewLogin) {
+    return req.logIn(previewUser(), { keepSessionInfo: true }, (err) => (err ? next(err) : res.redirect('/admin')));
+  }
   if (!googleConfigured) {
     return res.status(503).page('admin/login', {
       title: `Logowanie | ${site.name}`,
@@ -18,7 +23,7 @@ router.get('/auth/google', limits.auth, (req, res, next) => {
 });
 
 router.get('/auth/google/callback', limits.auth, (req, res, next) => {
-  if (!googleConfigured) return res.redirect('/admin');
+  if (!googleConfigured || config.previewLogin) return res.redirect('/admin');
   return passport.authenticate('google', (err, user, info) => {
     if (err) return next(err);
     if (!user) {

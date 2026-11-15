@@ -50,6 +50,9 @@ Production: **bookowska.shop** on the client's own VPS, same nginx + PM2 layout.
   `Origin`/`Referer`. Keep `Referrer-Policy: strict-origin-when-cross-origin` —
   with helmet's default `no-referrer` browsers send `Origin: null` and every form
   breaks. Future webhooks from payment operators must be mounted **before** it.
+- Preview login: `PREVIEW_LOGIN=true` (staging preview only) makes `/auth/google` sign in as
+  `ROOT_EMAIL` without Google. `config.validate()` refuses to start with it on any host other than
+  `*.staging.vamude.com` / localhost — never set it on bookowska.shop.
 - Auth: only `ROOT_EMAIL` / `ADMIN_EMAILS` / `users.role='admin'` can sign in;
   roles are recomputed per request (`lib/auth.js`). Admin routes live behind the
   guard in `routes/admin.js`; `routes/adminEvents.js` is mounted after it.

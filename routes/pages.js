@@ -6,7 +6,6 @@ const catalog = require('../lib/catalog');
 const workshops = require('../lib/workshops');
 const orders = require('../lib/orders');
 const shipping = require('../lib/shipping');
-const { APP_VERSION } = require('../lib/version');
 const { money, dateNum, time } = require('../lib/format');
 
 const router = express.Router();
@@ -61,10 +60,6 @@ router.get('/polityka-prywatnosci', (req, res) => {
     canonicalPath: '/polityka-prywatnosci',
     jsonLd: [seo.breadcrumbs([{ name: 'Start', path: '/' }, { name: 'Polityka prywatności', path: '/polityka-prywatnosci' }])],
   });
-});
-
-router.get('/healthz', (req, res) => {
-  res.json({ status: 'ok', version: APP_VERSION.version, commit: APP_VERSION.commit });
 });
 
 router.get('/robots.txt', (req, res) => {

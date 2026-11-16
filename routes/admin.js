@@ -6,6 +6,7 @@ const site = require('../lib/site');
 const orders = require('../lib/orders');
 const shipping = require('../lib/shipping');
 const workshops = require('../lib/workshops');
+const config = require('../lib/config');
 const { isAdmin, googleConfigured } = require('../lib/auth');
 
 const router = express.Router();
@@ -26,6 +27,7 @@ router.use((req, res, next) => {
     title: `Logowanie | ${site.name}`,
     noindex: true,
     googleConfigured,
+    previewLogin: config.previewLogin,
     loginError: LOGIN_MESSAGES[req.query.logowanie] || null,
   });
 });

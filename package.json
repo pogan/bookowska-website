@@ -32,7 +32,8 @@
     "helmet": "^8.3.0",
     "nodemailer": "^10.1.1",
     "passport": "^0.7.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "vamude-kit": "https://github.com/pogan/vamude-kit/archive/refs/tags/v1.0.0.tar.gz"
   },
   "devDependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",
@@ -41,5 +42,8 @@
     "bootstrap-icons": "^1.13.2",
     "html5-boilerplate": "^9.0.1",
     "sharp": "^0.35.5"
+  },
+  "allowScripts": {
+    "better-sqlite3": true
   }
 }

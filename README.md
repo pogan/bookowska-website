@@ -82,6 +82,9 @@ operator.
 - **SEO**: canonical URLs, Open Graph, JSON-LD (`LocalBusiness`, `Event` for each
   workshop session, `Product`, breadcrumbs), `sitemap.xml`, `llms.txt`.
   Indexing is off (`noindex` + `Disallow: /`) until `ALLOW_INDEXING=true`.
+- **vamude-kit** ([pogan/vamude-kit](https://github.com/pogan/vamude-kit)): `/healthz` (status, version,
+  commit, DB check), the version label in the footer, and first-party visit statistics (`vk_*` tables in the
+  app database, no cookies, bots counted separately) with the panel at `/admin/statystyki` for admins.
 
 ## Setup
 

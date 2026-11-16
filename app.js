@@ -8,7 +8,7 @@ const db = require('./db');
 const SqliteSessionStore = require('./lib/sqliteSessionStore');
 const { passport, roleOf } = require('./lib/auth');
 const { securityHeaders, sameOriginPost } = require('./lib/security');
-const { APP_VERSION } = require('./lib/version');
+const { readVersion, healthz, createStats } = require('vamude-kit');
 const { seedIfEmpty } = require('./lib/seed');
 const site = require('./lib/site');
 const seo = require('./lib/seo');
@@ -28,6 +28,16 @@ if (errors.length) {
 const seeded = seedIfEmpty();
 if (seeded && !config.isTest) console.log('[seed] Pusta baza - wczytano ofertę z db/seed/*.json.');
 
+const APP_VERSION = readVersion({ root: __dirname });
+
+// Statystyki odwiedzin (vamude-kit): tabele vk_* w bazie aplikacji, panel w /admin/statystyki.
+const stats = createStats({
+  db,
+  exclude: (req, res) => res.locals.isAdmin,
+  guard: (req, res) => res.locals.isAdmin,
+  panelPath: '/admin/statystyki',
+});
+
 const app = express();
 
 app.set('trust proxy', 1);
@@ -36,6 +46,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(securityHeaders);
 app.use(compression());
+app.get('/healthz', healthz({ version: APP_VERSION, checks: { db: () => db.prepare('SELECT 1').get() } }));
+app.use(stats.middleware);
 // Podgląd przed podpięciem domeny nie powinien trafić do wyszukiwarek.
 app.use((req, res, next) => {
   if (!config.allowIndexing) res.set('X-Robots-Tag', 'noindex, nofollow');
@@ -104,6 +116,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use(stats.panel);
 
 // res.page(widok, dane): renderuje widok strony, a potem osadza go w layout.ejs
 // (nagłówek, stopka, meta SEO wspólne dla wszystkich stron).

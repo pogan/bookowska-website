@@ -33,7 +33,7 @@
     "nodemailer": "^10.1.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "vamude-kit": "https://github.com/pogan/vamude-kit/archive/0aebb5abb89b084bb11a59aaf0d6384abf1c3b8e.tar.gz"
+    "vamude-kit": "https://github.com/pogan/vamude-kit/archive/refs/tags/v1.0.0.tar.gz"
   },
   "devDependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",

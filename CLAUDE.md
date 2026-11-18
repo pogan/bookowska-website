@@ -20,13 +20,13 @@ Production: **bookowska.shop** on the client's own VPS, same nginx + PM2 layout.
   `DB_PATH`; `lib/config.js` skips `.env` in tests.
 - `npm run seed` — sync **products** from `db/seed/products.json` (stock only on
   first import; `-- --reset-stock` to force). Workshops and sessions are managed
-  in the panel (`/admin/wydarzenia`, `lib/events.js`); `db/seed/workshops.json`
+  in the panel (`/kierownik/wydarzenia`, `lib/events.js`); `db/seed/workshops.json`
   is imported only into an empty database — never sync it over real data.
 - `npm run backup` — SQLite backup API → `data/backups/` (retention `BACKUP_KEEP`).
 - `npm run images` / `npm run icons` / `npm run vendor` — regenerate committed
   assets. `images` needs `input_data/` (client originals, gitignored).
 - `npm run dev-session` — prints a `bookowska.sid=…` cookie for a local root
-  session; use with `curl -H "Cookie: …"` to check `/admin` without Google.
+  session; use with `curl -H "Cookie: …"` to check `/kierownik` without Google.
 
 ## Architecture rules
 

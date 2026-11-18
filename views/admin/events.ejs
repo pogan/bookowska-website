@@ -12,8 +12,8 @@
 <section class="sheet pt-0">
   <div class="container">
     <div class="actions mb-5">
-      <a class="btn btn-ink" href="/admin/wydarzenia/terminy/nowy"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-plus-lg"></use></svg>Nowy termin</a>
-      <a class="btn btn-line" href="/admin/wydarzenia/rodzaje/nowy"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-plus-lg"></use></svg>Nowy rodzaj warsztatów</a>
+      <a class="btn btn-ink" href="/kierownik/wydarzenia/terminy/nowy"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-plus-lg"></use></svg>Nowy termin</a>
+      <a class="btn btn-line" href="/kierownik/wydarzenia/rodzaje/nowy"><svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-plus-lg"></use></svg>Nowy rodzaj warsztatów</a>
     </div>
 
     <%- include('../partials/sheet-head', { no: '01', title: 'Najbliższe terminy', aside: String(upcoming.length) }) %>
@@ -24,13 +24,13 @@
         <tbody>
           <% upcoming.forEach((s) => { %>
           <tr>
-            <td class="mono"><a href="/admin/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %></a><br><span class="small text-muted-ink"><%= f.weekdayShort(s.starts_at) %> <%= f.time(s.starts_at) %>–<%= f.time(s.ends_at) %></span></td>
+            <td class="mono"><a href="/kierownik/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %></a><br><span class="small text-muted-ink"><%= f.weekdayShort(s.starts_at) %> <%= f.time(s.starts_at) %>–<%= f.time(s.ends_at) %></span></td>
             <td><%= s.workshop_title %><% if (!s.workshop_active) { %><br><span class="small text-muted-ink">warsztaty ukryte</span><% } %></td>
             <td><%= s.location %><% if (s.note) { %><br><span class="small text-muted-ink"><%= s.note %></span><% } %></td>
             <td class="mono"><%= seatsCell(s) %><% if (s.signup_count) { %><br><span class="small text-muted-ink"><%= s.signup_count %> <%= f.plural(s.signup_count, 'zgłoszenie', 'zgłoszenia', 'zgłoszeń') %></span><% } %></td>
             <td class="mono"><%= s.price ? f.money(s.price) : '—' %></td>
             <td class="small"><%= s.statusLabel %><% if (s.isFull && s.status === 'open') { %><br>komplet<% } %></td>
-            <td class="text-end"><a class="btn btn-line btn-sm" href="/admin/wydarzenia/terminy/<%= s.id %>">Edytuj</a></td>
+            <td class="text-end"><a class="btn btn-line btn-sm" href="/kierownik/wydarzenia/terminy/<%= s.id %>">Edytuj</a></td>
           </tr>
           <% }) %>
         </tbody>
@@ -47,15 +47,15 @@
         <tbody>
           <% workshops.forEach((w) => { %>
           <tr>
-            <td><a href="/admin/wydarzenia/rodzaje/<%= w.id %>"><%= w.title %></a><br><span class="mono small text-muted-ink">/warsztaty/<%= w.slug %></span></td>
+            <td><a href="/kierownik/wydarzenia/rodzaje/<%= w.id %>"><%= w.title %></a><br><span class="mono small text-muted-ink">/warsztaty/<%= w.slug %></span></td>
             <td class="small"><%= w.isRequest ? 'na zamówienie' : 'otwarte' %></td>
             <td class="mono"><%= w.price ? f.money(w.price) : '—' %></td>
             <td class="mono"><%= w.capacity %></td>
             <td class="mono"><%= w.upcoming_count %> / <%= w.session_count %><br><span class="small text-muted-ink">nadch. / wszystkie</span></td>
             <td class="small"><%= w.is_active ? 'widoczne' : 'ukryte' %></td>
             <td class="text-end text-nowrap">
-              <a class="btn btn-line btn-sm" href="/admin/wydarzenia/rodzaje/<%= w.id %>">Edytuj</a>
-              <a class="btn btn-line btn-sm" href="/admin/wydarzenia/terminy/nowy?warsztat=<%= w.id %>" aria-label="Dodaj termin: <%= w.title %>">+ termin</a>
+              <a class="btn btn-line btn-sm" href="/kierownik/wydarzenia/rodzaje/<%= w.id %>">Edytuj</a>
+              <a class="btn btn-line btn-sm" href="/kierownik/wydarzenia/terminy/nowy?warsztat=<%= w.id %>" aria-label="Dodaj termin: <%= w.title %>">+ termin</a>
             </td>
           </tr>
           <% }) %>
@@ -71,7 +71,7 @@
         <tbody>
           <% past.forEach((s) => { %>
           <tr>
-            <td class="mono"><a href="/admin/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %></a> <span class="small text-muted-ink"><%= f.time(s.starts_at) %></span></td>
+            <td class="mono"><a href="/kierownik/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %></a> <span class="small text-muted-ink"><%= f.time(s.starts_at) %></span></td>
             <td><%= s.workshop_title %></td>
             <td class="mono"><%= seatsCell(s) %></td>
             <td class="small"><%= s.statusLabel %></td>

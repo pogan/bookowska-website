@@ -4,12 +4,12 @@
   const val = (field) => (values[field] ?? '');
   const describedBy = (field) => (errors[field] ? ` aria-describedby="${field}-err"` : '');
   const isEdit = Boolean(workshop);
-  const action = isEdit ? `/admin/wydarzenia/rodzaje/${workshop.id}` : '/admin/wydarzenia/rodzaje';
+  const action = isEdit ? `/kierownik/wydarzenia/rodzaje/${workshop.id}` : '/kierownik/wydarzenia/rodzaje';
   const text = (id, label, opts = {}) => ({ id, label, ...opts });
 %>
 <section class="page-head pb-0">
   <div class="container">
-    <nav class="crumbs" aria-label="Okruszki"><a href="/admin">Panel</a><span aria-hidden="true">/</span><a href="/admin/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? workshop.title : 'Nowy rodzaj' %></nav>
+    <nav class="crumbs" aria-label="Okruszki"><a href="/kierownik">Panel</a><span aria-hidden="true">/</span><a href="/kierownik/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? workshop.title : 'Nowy rodzaj' %></nav>
     <span class="label">Rodzaj warsztatów</span>
     <h1 class="display"><%= isEdit ? workshop.title : 'Nowy rodzaj warsztatów' %></h1>
     <%- include('_nav') %>
@@ -131,7 +131,7 @@
 
           <div class="actions">
             <button class="btn btn-ink" type="submit"><%= isEdit ? 'Zapisz zmiany' : 'Dodaj warsztaty' %></button>
-            <a class="btn btn-line" href="/admin/wydarzenia">Anuluj</a>
+            <a class="btn btn-line" href="/kierownik/wydarzenia">Anuluj</a>
           </div>
         </form>
 
@@ -142,7 +142,7 @@
             <p class="mt-3 mb-0"><%= f.typo('Te warsztaty mają terminy albo zgłoszenia, więc nie można ich usunąć. Odznacz „Widoczne na stronie”, żeby je ukryć.') %></p>
           <% } else { %>
             <p class="mt-3"><%= f.typo('Warsztaty znikną ze strony i z panelu. Tego nie da się cofnąć.') %></p>
-            <form method="post" action="/admin/wydarzenia/rodzaje/<%= workshop.id %>/usun" class="m-0">
+            <form method="post" action="/kierownik/wydarzenia/rodzaje/<%= workshop.id %>/usun" class="m-0">
               <button class="btn btn-danger-line" type="submit">Usuń na stałe</button>
             </form>
           <% } %>
@@ -157,13 +157,13 @@
           <% if (sessions.length) { %>
           <ul class="ship-list mb-3">
             <% sessions.forEach((s) => { %>
-            <li><a href="/admin/wydarzenia/terminy/<%= s.id %>" class="mono"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a><span class="small text-muted-ink"><%= s.isPast ? 'minął' : s.statusLabel %> · <%= s.taken %>/<%= s.seats %></span></li>
+            <li><a href="/kierownik/wydarzenia/terminy/<%= s.id %>" class="mono"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a><span class="small text-muted-ink"><%= s.isPast ? 'minął' : s.statusLabel %> · <%= s.taken %>/<%= s.seats %></span></li>
             <% }) %>
           </ul>
           <% } else { %>
           <p class="small">Brak terminów.</p>
           <% } %>
-          <a class="btn btn-line btn-sm w-100" href="/admin/wydarzenia/terminy/nowy?warsztat=<%= workshop.id %>">+ Dodaj termin</a>
+          <a class="btn btn-line btn-sm w-100" href="/kierownik/wydarzenia/terminy/nowy?warsztat=<%= workshop.id %>">+ Dodaj termin</a>
           <% if (workshop.is_active) { %>
           <p class="mt-3 mb-0"><a class="link-arrow" href="/warsztaty/<%= workshop.slug %>">Zobacz na stronie<svg class="icon" aria-hidden="true"><use href="/images/icons.svg#i-arrow-up-right"></use></svg></a></p>
           <% } %>

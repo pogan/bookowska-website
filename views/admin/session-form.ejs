@@ -4,7 +4,7 @@
   const val = (field) => (values[field] ?? '');
   const describedBy = (field) => (errors[field] ? ` aria-describedby="${field}-err"` : '');
   const isEdit = Boolean(session);
-  const action = isEdit ? `/admin/wydarzenia/terminy/${session.id}` : '/admin/wydarzenia/terminy';
+  const action = isEdit ? `/kierownik/wydarzenia/terminy/${session.id}` : '/kierownik/wydarzenia/terminy';
   const current = workshops.find((w) => String(w.id) === String(values.workshop_id));
   const activeSignups = isEdit ? session.signups.filter((g) => g.status !== 'cancelled') : [];
   const signupStatus = { new: 'nowe', confirmed: 'potwierdzone', cancelled: 'wycofane' };
@@ -17,7 +17,7 @@
 %>
 <section class="page-head pb-0">
   <div class="container">
-    <nav class="crumbs" aria-label="Okruszki"><a href="/admin">Panel</a><span aria-hidden="true">/</span><a href="/admin/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? `Termin ${f.dateNum(session.starts_at)}` : 'Nowy termin' %></nav>
+    <nav class="crumbs" aria-label="Okruszki"><a href="/kierownik">Panel</a><span aria-hidden="true">/</span><a href="/kierownik/wydarzenia">Wydarzenia</a><span aria-hidden="true">/</span><%= isEdit ? `Termin ${f.dateNum(session.starts_at)}` : 'Nowy termin' %></nav>
     <span class="label"><%= isEdit ? session.workshop_title : 'Wydarzenia' %></span>
     <h1 class="display"><%= isEdit ? `${f.dateNum(session.starts_at)}, ${f.time(session.starts_at)}` : 'Nowy termin' %></h1>
     <%- include('_nav') %>
@@ -48,7 +48,7 @@
               <% }) %>
             </select>
             <% if (err('workshop_id')) { %><div class="invalid-feedback" id="workshop_id-err"><%= err('workshop_id') %></div><% } %>
-            <div class="form-text"><a href="/admin/wydarzenia/rodzaje/nowy">Brakuje rodzaju? Dodaj nowy.</a></div>
+            <div class="form-text"><a href="/kierownik/wydarzenia/rodzaje/nowy">Brakuje rodzaju? Dodaj nowy.</a></div>
           </fieldset>
 
           <fieldset class="form-section">
@@ -109,7 +109,7 @@
 
           <div class="actions">
             <button class="btn btn-ink" type="submit"><%= isEdit ? 'Zapisz zmiany' : 'Dodaj termin' %></button>
-            <a class="btn btn-line" href="/admin/wydarzenia">Anuluj</a>
+            <a class="btn btn-line" href="/kierownik/wydarzenia">Anuluj</a>
           </div>
         </form>
 
@@ -120,7 +120,7 @@
             <p class="mt-3 mb-0"><%= f.typo('Na ten termin są zgłoszenia, więc nie można go usunąć. Zmień status na „Odwołany” — zgłoszenia zostaną w panelu.') %></p>
           <% } else { %>
             <p class="mt-3"><%= f.typo('Termin zniknie z kalendarza na stronie. Tego nie da się cofnąć.') %></p>
-            <form method="post" action="/admin/wydarzenia/terminy/<%= session.id %>/usun" class="m-0">
+            <form method="post" action="/kierownik/wydarzenia/terminy/<%= session.id %>/usun" class="m-0">
               <button class="btn btn-danger-line" type="submit">Usuń termin na stałe</button>
             </form>
           <% } %>

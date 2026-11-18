@@ -37,7 +37,10 @@ test('panel /kierownik/stats tylko dla admina', async () => {
   const anon = await client(srv.base).get('/kierownik/stats');
   assert.equal(anon.status, 303);
   assert.equal(anon.location, '/kierownik?next=%2Fkierownik%2Fstats');
-  assert.equal((await client(srv.base).get('/admin/wydarzenia')).location, '/kierownik/wydarzenia');
+  // Pod /admin nic nie ma, a robots.txt nie zdradza adresu panelu.
+  assert.equal((await client(srv.base).get('/admin')).status, 404);
+  assert.equal((await client(srv.base).get('/admin/wydarzenia')).status, 404);
+  assert.doesNotMatch((await client(srv.base).get('/robots.txt')).text, /kierownik|admin/);
   const admin = client(srv.base, { cookie: sessionCookie() });
   const res = await admin.get('/kierownik/stats');
   assert.equal(res.status, 200);

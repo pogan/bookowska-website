@@ -146,9 +146,9 @@ app.use('/', require('./routes/workshops').router);
 app.use('/', require('./routes/shop').router);
 app.use('/', require('./routes/payments').router);
 app.use('/', require('./routes/auth').router);
-// Panel administratora: /kierownik (standard Vamude). Stare adresy /admin/... przekierowujemy.
+// Panel administratora: /kierownik (standard Vamude). Pod /admin celowo nic nie ma (404),
+// a robots.txt nie wymienia panelu: nie podpowiadamy skanerom adresu. Strony panelu mają noindex.
 app.use('/kierownik', require('./routes/admin').router);
-app.use('/admin', (req, res) => res.redirect(301, `/kierownik${req.url === '/' ? '' : req.url}`));
 
 app.use((req, res) => {
   res.status(404).page('errors/404', { title: `Nie znaleziono strony | ${site.name}`, noindex: true });

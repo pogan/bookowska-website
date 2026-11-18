@@ -27,7 +27,7 @@
         <tbody>
           <% sessions.forEach((s) => { %>
           <tr>
-            <td class="mono"><a href="/admin/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a></td>
+            <td class="mono"><a href="/kierownik/wydarzenia/terminy/<%= s.id %>"><%= f.dateNum(s.starts_at) %> <%= f.time(s.starts_at) %></a></td>
             <td><%= s.workshop_title %></td>
             <td><%= s.location %></td>
             <td class="mono"><%= s.taken %> / <%= s.seats %></td>
@@ -73,7 +73,7 @@
         <tbody>
           <% orders.forEach((o) => { %>
           <tr>
-            <td class="mono"><a href="/admin/zamowienia/<%= o.number %>"><%= o.number %></a><% if (o.payment_provider === 'mock') { %><br><span class="small text-muted-ink">test</span><% } %></td>
+            <td class="mono"><a href="/kierownik/zamowienia/<%= o.number %>"><%= o.number %></a><% if (o.payment_provider === 'mock') { %><br><span class="small text-muted-ink">test</span><% } %></td>
             <td class="mono small"><%= f.dateTime(o.created_at) %></td>
             <td><%= o.customer_name %><br><a class="small" href="mailto:<%= o.email %>"><%= o.email %></a></td>
             <td class="mono"><%= o.item_count %></td>

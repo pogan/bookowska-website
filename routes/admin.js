@@ -22,7 +22,7 @@ router.use((req, res, next) => {
   if (req.user) {
     return res.status(403).page('admin/forbidden', { title: `Brak dostępu | ${site.name}`, noindex: true });
   }
-  if (req.path !== '/') return res.redirect('/admin');
+  if (req.path !== '/') return res.redirect('/kierownik');
   return res.page('admin/login', {
     title: `Logowanie | ${site.name}`,
     noindex: true,

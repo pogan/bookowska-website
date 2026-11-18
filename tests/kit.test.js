@@ -33,12 +33,18 @@ test('statystyki: odsłona gościa liczona, admina nie', async () => {
   assert.deepEqual(pageviews(), [{ path: '/', is_bot: 0 }]);
 });
 
-test('panel /admin/statystyki tylko dla admina', async () => {
-  assert.equal((await client(srv.base).get('/admin/statystyki')).status, 302);
+test('panel /kierownik/stats tylko dla admina', async () => {
+  const anon = await client(srv.base).get('/kierownik/stats');
+  assert.equal(anon.status, 303);
+  assert.equal(anon.location, '/kierownik?next=%2Fkierownik%2Fstats');
+  // Pod /admin nic nie ma, a robots.txt nie zdradza adresu panelu.
+  assert.equal((await client(srv.base).get('/admin')).status, 404);
+  assert.equal((await client(srv.base).get('/admin/wydarzenia')).status, 404);
+  assert.doesNotMatch((await client(srv.base).get('/robots.txt')).text, /kierownik|admin/);
   const admin = client(srv.base, { cookie: sessionCookie() });
-  const res = await admin.get('/admin/statystyki');
+  const res = await admin.get('/kierownik/stats');
   assert.equal(res.status, 200);
   assert.match(res.text, /Unikalne osoby/);
   assert.match(res.headers.get('content-security-policy'), /style-src 'unsafe-inline'/);
-  assert.equal((await admin.get('/admin/statystyki.json')).status, 200);
+  assert.equal((await admin.get('/kierownik/stats.json')).status, 200);
 });

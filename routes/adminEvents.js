@@ -92,7 +92,7 @@ router.post('/terminy', (req, res) => {
   try {
     const id = events.createSession(data);
     flash(req, 'success', `Dodano termin ${values.date.split('-').reverse().join('.')}, ${values.start}.`);
-    return res.redirect(303, `/admin/wydarzenia/terminy/${id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/terminy/${id}`);
   } catch (err) {
     if (err instanceof events.EventError) return renderSessionForm(res, { values, formError: err.message, status: 409 });
     throw err;
@@ -114,7 +114,7 @@ router.post('/terminy/:id', (req, res, next) => {
   try {
     events.updateSession(session.id, data);
     flash(req, 'success', 'Zapisano zmiany terminu.');
-    return res.redirect(303, `/admin/wydarzenia/terminy/${session.id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/terminy/${session.id}`);
   } catch (err) {
     if (err instanceof events.EventError) return renderSessionForm(res, { session, values, formError: err.message, status: 409 });
     throw err;
@@ -127,11 +127,11 @@ router.post('/terminy/:id/usun', (req, res, next) => {
   try {
     events.deleteSession(session.id);
     flash(req, 'success', `Usunięto termin ${dateNum(session.starts_at)} (${session.workshop_title}).`);
-    return res.redirect(303, '/admin/wydarzenia');
+    return res.redirect(303, '/kierownik/wydarzenia');
   } catch (err) {
     if (!(err instanceof events.EventError)) throw err;
     flash(req, 'warning', err.message);
-    return res.redirect(303, `/admin/wydarzenia/terminy/${session.id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/terminy/${session.id}`);
   }
 });
 
@@ -187,7 +187,7 @@ router.post('/rodzaje', (req, res) => {
   try {
     const id = events.createWorkshop(data);
     flash(req, 'success', `Dodano warsztaty „${data.title}”. Teraz możesz dodać im terminy.`);
-    return res.redirect(303, `/admin/wydarzenia/rodzaje/${id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/rodzaje/${id}`);
   } catch (err) {
     if (err instanceof events.EventError) return renderWorkshopForm(res, { values, formError: err.message, status: 409 });
     throw err;
@@ -208,7 +208,7 @@ router.post('/rodzaje/:id', (req, res, next) => {
   try {
     events.updateWorkshop(workshop.id, data);
     flash(req, 'success', 'Zapisano zmiany warsztatów.');
-    return res.redirect(303, `/admin/wydarzenia/rodzaje/${workshop.id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/rodzaje/${workshop.id}`);
   } catch (err) {
     if (err instanceof events.EventError) return renderWorkshopForm(res, { workshop, values, formError: err.message, status: 409 });
     throw err;
@@ -221,11 +221,11 @@ router.post('/rodzaje/:id/usun', (req, res, next) => {
   try {
     events.deleteWorkshop(workshop.id);
     flash(req, 'success', `Usunięto warsztaty „${workshop.title}”.`);
-    return res.redirect(303, '/admin/wydarzenia');
+    return res.redirect(303, '/kierownik/wydarzenia');
   } catch (err) {
     if (!(err instanceof events.EventError)) throw err;
     flash(req, 'warning', err.message);
-    return res.redirect(303, `/admin/wydarzenia/rodzaje/${workshop.id}`);
+    return res.redirect(303, `/kierownik/wydarzenia/rodzaje/${workshop.id}`);
   }
 });
 

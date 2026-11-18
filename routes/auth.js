@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/auth/google', limits.auth, (req, res, next) => {
   // Podgląd dla klientki: logowanie zawsze się udaje, bez Google (lib/config.js).
   if (config.previewLogin) {
-    return req.logIn(previewUser(), { keepSessionInfo: true }, (err) => (err ? next(err) : res.redirect('/admin')));
+    return req.logIn(previewUser(), { keepSessionInfo: true }, (err) => (err ? next(err) : res.redirect('/kierownik')));
   }
   if (!googleConfigured) {
     return res.status(503).page('admin/login', {
@@ -23,18 +23,18 @@ router.get('/auth/google', limits.auth, (req, res, next) => {
 });
 
 router.get('/auth/google/callback', limits.auth, (req, res, next) => {
-  if (!googleConfigured || config.previewLogin) return res.redirect('/admin');
+  if (!googleConfigured || config.previewLogin) return res.redirect('/kierownik');
   return passport.authenticate('google', (err, user, info) => {
     if (err) return next(err);
     if (!user) {
       const reason = info && info.message === 'unverified' ? 'niepotwierdzony' : 'odmowa';
-      return res.redirect(`/admin?logowanie=${reason}`);
+      return res.redirect(`/kierownik?logowanie=${reason}`);
     }
     // keepSessionInfo: passport i tak zmienia identyfikator sesji (ochrona przed
     // session fixation), ale zachowuje jej zawartość - np. koszyk.
     return req.logIn(user, { keepSessionInfo: true }, (loginErr) => {
       if (loginErr) return next(loginErr);
-      return res.redirect('/admin');
+      return res.redirect('/kierownik');
     });
   })(req, res, next);
 });

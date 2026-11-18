@@ -144,13 +144,13 @@ test('zakup: koszyk -> zamówienie -> symulowana płatność -> opłacone, koszy
 
 test('panel: logowanie wymagane, podstrony przekierowują', async () => {
   const c = client(srv.base);
-  const login = await c.get('/admin');
+  const login = await c.get('/kierownik');
   assert.equal(login.status, 200);
   assert.match(login.text, /Logowanie/);
   assert.equal(login.headers.get('cache-control'), 'no-store');
-  const sub = await c.get('/admin/zamowienia/BK-2026-0001');
+  const sub = await c.get('/kierownik/zamowienia/BK-2026-0001');
   assert.equal(sub.status, 302);
-  assert.equal(sub.location, '/admin');
+  assert.equal(sub.location, '/kierownik');
   // Bez kluczy Google logowanie zwraca czytelne 503 zamiast błędu.
   assert.equal((await c.get('/auth/google')).status, 503);
 });

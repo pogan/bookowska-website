@@ -14,7 +14,7 @@ test.before(async () => {
 test.after(() => srv.close());
 
 test('podgląd: strona logowania pokazuje wejście bez Google', async () => {
-  const res = await client(srv.base).get('/admin');
+  const res = await client(srv.base).get('/kierownik');
   assert.equal(res.status, 200);
   assert.match(res.text, /Wejdź do panelu \(wersja testowa\)/);
   assert.doesNotMatch(res.text, /Zaloguj przez Google/);
@@ -24,13 +24,13 @@ test('podgląd: logowanie zawsze się udaje i otwiera panel', async () => {
   const c = client(srv.base);
   const login = await c.get('/auth/google');
   assert.equal(login.status, 302);
-  assert.equal(login.location, '/admin');
-  const panel = await c.get('/admin');
+  assert.equal(login.location, '/kierownik');
+  const panel = await c.get('/kierownik');
   assert.equal(panel.status, 200);
   assert.doesNotMatch(panel.text, /Wejdź do panelu/);
   // Drugie logowanie (konto już istnieje) też się udaje.
   const again = await client(srv.base).get('/auth/google');
-  assert.equal(again.location, '/admin');
+  assert.equal(again.location, '/kierownik');
 });
 
 // validate() w osobnym procesie, bo config czyta środowisko raz, przy pierwszym require.

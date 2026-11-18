@@ -30,13 +30,9 @@ if (seeded && !config.isTest) console.log('[seed] Pusta baza - wczytano ofertę 
 
 const APP_VERSION = readVersion({ root: __dirname });
 
-// Statystyki odwiedzin (vamude-kit): tabele vk_* w bazie aplikacji, panel w /admin/statystyki.
-const stats = createStats({
-  db,
-  exclude: (req, res) => res.locals.isAdmin,
-  guard: (req, res) => res.locals.isAdmin,
-  panelPath: '/admin/statystyki',
-});
+// Statystyki odwiedzin (vamude-kit): tabele vk_* w bazie aplikacji, panel /kierownik/stats
+// dla każdego zalogowanego administratora (res.locals.isAdmin); ruch admina pomijany.
+const stats = createStats({ db });
 
 const app = express();
 
@@ -150,7 +146,9 @@ app.use('/', require('./routes/workshops').router);
 app.use('/', require('./routes/shop').router);
 app.use('/', require('./routes/payments').router);
 app.use('/', require('./routes/auth').router);
-app.use('/admin', require('./routes/admin').router);
+// Panel administratora: /kierownik (standard Vamude). Stare adresy /admin/... przekierowujemy.
+app.use('/kierownik', require('./routes/admin').router);
+app.use('/admin', (req, res) => res.redirect(301, `/kierownik${req.url === '/' ? '' : req.url}`));
 
 app.use((req, res) => {
   res.status(404).page('errors/404', { title: `Nie znaleziono strony | ${site.name}`, noindex: true });

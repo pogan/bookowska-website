@@ -27,7 +27,7 @@ operator.
   pickup, order status page. Each product page renders a **dimensioned technical
   drawing** of the item (front and side view, dimension lines, centre lines,
   hatching for the cloth spine) generated from its dimensions in the database.
-- **Admin panel** (`/admin`, Google sign-in) — overview of upcoming sessions
+- **Admin panel** (`/kierownik`, Google sign-in) — overview of upcoming sessions
   with occupancy, sign-ups and orders, and **events management**: create, edit,
   close, cancel and delete workshop sessions and workshop types (description,
   programme, price, group size, photo picked from the image library). The rules
@@ -84,7 +84,7 @@ operator.
   Indexing is off (`noindex` + `Disallow: /`) until `ALLOW_INDEXING=true`.
 - **vamude-kit** ([pogan/vamude-kit](https://github.com/pogan/vamude-kit)): `/healthz` (status, version,
   commit, DB check), the version label in the footer, and first-party visit statistics (`vk_*` tables in the
-  app database, no cookies, bots counted separately) with the panel at `/admin/statystyki` for admins.
+  app database, no cookies, bots counted separately) with the panel at `/kierownik/stats` for admins.
 
 ## Setup
 
@@ -105,7 +105,7 @@ database is filled from `db/seed/*.json`.
 | `npm test` | `node:test` suite on throwaway databases: orders and stock, payment idempotency, seat limits, auth rules, HTTP routes (CSP, CSRF, full purchase flow). |
 | `npm run seed [-- --reset-stock]` | Sync products from `db/seed/products.json` (workshops are managed in the panel). |
 | `npm run backup` | Consistent SQLite backup to `data/backups/` (keeps the last 30; `BACKUP_DIR`, `BACKUP_KEEP`). |
-| `npm run dev-session [-- email]` | Print a cookie for a local admin session (refuses to run in production) — for checking `/admin` before OAuth is set up. |
+| `npm run dev-session [-- email]` | Print a cookie for a local admin session (refuses to run in production) — for checking `/kierownik` before OAuth is set up. |
 | `npm run images` | Rebuild photos from `input_data/` (see `scripts/images.config.js`). |
 | `npm run icons` | Rebuild favicons, app icons and `og-cover.jpg`. |
 | `npm run vendor` | Re-copy Bootstrap, H5BP styles, fonts and the icon sprite into `public/vendor`. |

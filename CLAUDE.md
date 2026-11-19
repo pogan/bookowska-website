@@ -7,15 +7,15 @@ Guidance for Claude Code when working in this repository.
 Website for Karina Lewandowska's bookbinding studio **Bookowska** (Sopot): business
 card, workshop calendar with e-mail sign-ups, small shop with a **simulated**
 payment gateway, read-only admin panel behind Google sign-in. Polish UI, code
-comments in Polish, README in English. Staging: **bookowska.vamude.com** on the
-shared VPS "websites" (nginx reverse proxy + PM2, port **3006**, Node 20).
-Production: **bookowska.shop** on the client's own VPS, same nginx + PM2 layout.
+comments in Polish, README in English. Preview: **bookowska.staging.vamude.com**
+(Docker on STAGING, port **3006**, Node 24). Production: **bookowska.shop** on the
+client's own VPS (nginx + PM2, Node 24), deployed manually by Karol.
 
 ## Commands
 
 - `npm run dev` — server with `--watch` on `PORT` from `.env` (3006).
 - `npm test` — `node --test` (auto-discovers `tests/*.test.js`; keep it argument-free:
-  Node 20 on the server has no glob support and `node --test tests/` fails on 24).
+  `node --test tests/` fails on Node 24).
   `tests/helpers.js` must be required first — it sets `NODE_ENV=test` and a temp
   `DB_PATH`; `lib/config.js` skips `.env` in tests.
 - `npm run seed` — sync **products** from `db/seed/products.json` (stock only on
@@ -78,8 +78,8 @@ vocabulary: `.sheet` + `partials/sheet-head` (numbered section heads),
 - The Chrome extension window can't go below ~1440px wide on macOS; test mobile
   with headless Chrome over CDP (`Emulation.setDeviceMetricsOverride`, Node 24
   has a global `WebSocket`) and check `document.documentElement.scrollWidth`.
-- `better-sqlite3` 13+ requires Node 22 — the server runs Node 20, stay on 12.x
-  until the VPS is upgraded.
+- Node 24 everywhere (CI, preview, client VPS). `better-sqlite3` 12.x has a prebuilt
+  binary for Node 24; changing the Node major requires `npm ci` (native module).
 - dotenv ≥17 logs on every load — `config({ quiet: true })`.
 
 ## Version control
